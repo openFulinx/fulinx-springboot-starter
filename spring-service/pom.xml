@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.fulinx</groupId>
+        <artifactId>fulinx-springboot-starter</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>spring-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.fulinx</groupId>
+    <name>spring-service</name>
+    <description>spring-service</description>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <com.fulinx.spring-core.version>0.0.1-SNAPSHOT</com.fulinx.spring-core.version>
+        <com.fulinx.spring-data.version>0.0.1-SNAPSHOT</com.fulinx.spring-data.version>
+        <skipTests>true</skipTests>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.fulinx</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${com.fulinx.spring-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fulinx</groupId>
+            <artifactId>spring-data</artifactId>
+            <version>${com.fulinx.spring-data.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

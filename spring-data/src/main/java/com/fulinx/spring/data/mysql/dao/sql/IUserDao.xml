@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) Minong Tech. 2023.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulinx.spring.data.mysql.dao.mapper.IUserDao">
+    <!--通用查询映射结果-->
+    <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbUserEntity">
+        <id column="id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="telephone" property="telephone"/>
+        <result column="is_email_verify" property="isEmailVerify"/>
+        <result column="status" property="status"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="record_version" property="recordVersion"/>
+        <result column="record_create_name" property="recordCreateName"/>
+        <result column="record_update_name" property="recordUpdateName"/>
+        <result column="record_create_time" property="recordCreateTime"/>
+        <result column="record_update_time" property="recordUpdateTime"/>
+    </resultMap>
+
+    <resultMap id="UserListResultMap" type="com.fulinx.spring.data.mysql.dao.podo.user.UserListResultDo">
+        <id column="id" property="id"/>
+        <result column="telephone" property="telephone"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="is_email_verify" property="isEmailVerify"/>
+        <result column="nickname" property="nickname"/>
+        <result column="first_name" property="firstName"/>
+        <result column="last_name" property="lastName"/>
+        <result column="birthday" property="birthday"/>
+        <result column="gender" property="gender"/>
+        <result column="company" property="company"/>
+        <result column="post" property="post"/>
+        <result column="personal_information" property="personalInformation"/>
+        <result column="status" property="status"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="record_version" property="recordVersion"/>
+        <result column="record_create_name" property="recordCreateName"/>
+        <result column="record_update_name" property="recordUpdateName"/>
+        <result column="record_create_time" property="recordCreateTime"/>
+        <result column="record_update_time" property="recordUpdateTime"/>
+    </resultMap>
+
+
+    <select id="lockById" resultMap="BaseResultMap">
+        SELECT tb_user.*
+        FROM tb_user
+        WHERE id = #{id}
+          AND is_delete = 0 FOR
+        UPDATE
+    </select>
+
+    <select id="lockByIds" resultMap="BaseResultMap">
+        SELECT
+        tb_user.*
+        FROM
+        tb_user
+        WHERE id IN
+        <foreach collection="idList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        AND is_delete = 0 FOR UPDATE
+    </select>
+
+    <select id="getUsers" resultMap="UserListResultMap">
+        SELECT tb_user.*,tb_user_profile.nickname, tb_user_profile.birthday, tb_user_profile.company,
+        tb_user_profile.personal_information,tb_user_profile.first_name,tb_user_profile.last_name,
+        tb_user_profile.gender,
+        tb_user_profile.post
+        FROM tb_user
+        LEFT JOIN tb_user_profile ON tb_user.id = tb_user_profile.user_id
+        WHERE 1 = 1
+        <if test="id !=null">
+            AND tb_user.id = #{id}
+        </if>
+        <if test="telephone !=null">
+            AND tb_user.telephone = #{telephone}
+        </if>
+        <choose>
+            <when test="isDelete == null">
+                AND tb_user.is_delete = 0
+            </when>
+            <otherwise>
+                AND tb_user.is_delete = #{isDelete}
+            </otherwise>
+        </choose>
+        order by tb_user.id DESC
+    </select>
+
+    <select id="list" resultMap="UserListResultMap">
+        SELECT tb_user.*,tb_user_profile.nickname, tb_user_profile.birthday, tb_user_profile.company,
+        tb_user_profile.personal_information,tb_user_profile.first_name,tb_user_profile.last_name,
+        tb_user_profile.gender,
+        tb_user_profile.post
+        FROM tb_user
+        LEFT JOIN tb_user_profile ON tb_user.id = tb_user_profile.user_id
+        WHERE 1 = 1
+        <if test="id !=null">
+            AND tb_user.id = #{id}
+        </if>
+        <if test="telephone !=null">
+            AND tb_user.telephone = #{telephone}
+        </if>
+        <choose>
+            <when test="isDelete == null">
+                AND tb_user.is_delete = 0
+            </when>
+            <otherwise>
+                AND tb_user.is_delete = #{isDelete}
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

@@ -1,0 +1,111 @@
+package com.fulinx.spring.data.mysql.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * <p>
+ * System User Table
+ * </p>
+ *
+ * @author fulinx
+ * @since 2024-06-22
+ */
+@Getter
+@Setter
+@Accessors(chain = true)
+@TableName("tb_system_user")
+@Schema(name = "TbSystemUserEntity", description = "System User Table")
+public class TbSystemUserEntity extends Model<TbSystemUserEntity> {
+
+    private static final long serialVersionUID = 1L;
+
+    @Schema(description = "ID")
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+
+    @Schema(description = "Username")
+    private String username;
+
+    @Schema(description = "Email")
+    private String email;
+
+    @Schema(description = "Password")
+    private String password;
+
+    @Schema(description = "Salt")
+    private String salt;
+
+    @Schema(description = "User Type, 1: Normal, 9999: administrator")
+    private Integer userType;
+
+    @Schema(description = "Status, 0: Disable, 1: Enable")
+    private Integer status;
+
+    @Schema(description = "Soft Delete Flag")
+    @TableLogic
+    private Integer isDelete;
+
+    @Schema(description = "Remark")
+    private String remark;
+
+    @Schema(description = "Record Version")
+    @Version
+    private Integer recordVersion;
+
+    @Schema(description = "Record Create Name")
+    @TableField(fill = FieldFill.INSERT)
+    private String recordCreateName;
+
+    @Schema(description = "Record Update Name")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String recordUpdateName;
+
+    @Schema(description = "Record Create Time")
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime recordCreateTime;
+
+    @Schema(description = "Record Update Time")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime recordUpdateTime;
+
+    public static final String ID = "id";
+
+    public static final String USERNAME = "username";
+
+    public static final String EMAIL = "email";
+
+    public static final String PASSWORD = "password";
+
+    public static final String SALT = "salt";
+
+    public static final String USER_TYPE = "user_type";
+
+    public static final String STATUS = "status";
+
+    public static final String IS_DELETE = "is_delete";
+
+    public static final String REMARK = "remark";
+
+    public static final String RECORD_VERSION = "record_version";
+
+    public static final String RECORD_CREATE_NAME = "record_create_name";
+
+    public static final String RECORD_UPDATE_NAME = "record_update_name";
+
+    public static final String RECORD_CREATE_TIME = "record_create_time";
+
+    public static final String RECORD_UPDATE_TIME = "record_update_time";
+
+    @Override
+    public Serializable pkVal() {
+        return this.id;
+    }
+}

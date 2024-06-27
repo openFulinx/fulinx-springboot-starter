@@ -1,0 +1,24 @@
+# JWT 配置
+jwt:
+  web:
+    # jwt签发者
+    issuer: https://localhost/
+    # 存放Token的Header Key
+    header: Authorization
+    # 密匙key
+    signingKey: kVsBbYNI9w60BpNymd6Wk1N_bs9JhSfOaab3iII7CWtJezbzT4NY-6BecaApYPpVXz2F3AkI-BWUH6C_WGKIRZ8ZkdF4iv42QkerdimF9f8UR0jCgCoqpdUnlHtId_H0ctGPjAYi9XohbKP_VuO2IaZzHnd-cydTbegD_sQMUnHEMFPjH3-YffgM-zJc5FcTqykWidiS0Qr7vkHD1U09xU44CNY_8egeRfzvGvBN0Gg7oibFOq2ueI_Fn_lVfrl-mAk25bEHu9p-FPLmBm6Aadpnt3uExB7F2qlUDFGcr3cY6W3QOsLSL1iSj2Kx8X6MlBgtuTaY78zowshXnwvMEw
+    # 自定义token 前缀字符
+    tokenPrefix: Bearer-
+    # 过期时间（秒）
+    accessTokenExpiration: 60000
+    # 刷新token时间（秒）
+    refreshTokenExpiration: 64800
+    # 需要认证的入口点
+    authenticationEndpoints:
+      - /server-side/system/user/**
+##      - /users/**
+##      - /user/files/**
+##      - /user/profiles/**
+#      - /server-side/system/user/**
+##      - /server-side/role/**
+##      - /server-side/permission/**

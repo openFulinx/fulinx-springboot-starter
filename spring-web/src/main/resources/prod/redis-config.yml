@@ -1,0 +1,7 @@
+redis-config:
+  cacheNameMap:
+    '[com.fulinx.spring.fulinx.spring.service.common.impl.CaptchaImageServiceImpl]' : 600 # 缓存的图形验证码Cache过期时间，单位：秒
+    '[com.fulinx.spring.fulinx.spring.service.common.impl.VerificationCodeServiceImpl]' : 600 # 缓存的短信验证码Cache过期时间，单位：秒
+    '[com.fulinx.spring.fulinx.spring.service.common.impl.AliyunServiceImpl.buildStsToken]': 3000 # 缓存的Sts Token过期时间，单位：秒
+    '[com.fulinx.spring.fulinx.spring.service.user.impl.UserProfileServiceImpl]': 1800 # 缓存的用户档案的过期时间，单位：秒
+    '[com.fulinx.spring.fulinx.spring.service.cloud.impl.CloudFileProfileServiceImpl.cacheById]': 600 # 缓存云文件档案数据的过期时间，单位：秒

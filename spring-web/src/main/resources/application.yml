@@ -1,0 +1,103 @@
+# ===================================================================
+# COMMON SPRING BOOT PROPERTIES
+# ===================================================================
+
+# ----------------------------------------
+# CORE PROPERTIES
+# ----------------------------------------
+
+logging: # LOGGING Configuration
+  config: classpath:logback-config.xml
+
+server: # Server Configuration
+  servlet:
+    context-path: /api
+
+spring: # Spring Configuration
+  banner: # BANNER Configuration
+    charset: UTF-8
+    location: classpath:banner.txt
+  profiles: # PROFILES Configuration
+    active: @profileActive@
+  servlet: # Servlet Configuration
+    multipart: # MULTIPART Configuration (MultipartProperties)
+      max-file-size: 10MB
+      max-request-size: 10MB
+  web: # Web Configuration
+    resources:
+      add-mappings: false
+  cache: # Cache Configuration
+    type: redis
+  data: # Data Configuration
+    redis: # Redis Configuration
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000
+      lettuce: # Lettuce Configuration
+        pool: # Lettuce Connection Pool Configuration
+          # Maximum number of active connections in the pool
+          max-active: 8
+          # Maximum waiting time for a connection from the pool
+          max-wait: -1
+          # Maximum number of idle connections in the pool
+          max-idle: 8
+          # Minimum number of idle connections in the pool
+          min-idle: 0
+  jackson: # Jackson Configuration
+    # Locale for Jackson serialization/deserialization
+    locale: zh
+    # Timezone for Jackson serialization/deserialization
+    time-zone: Asia/Shanghai
+    # Date format for Jackson serialization/deserialization
+    date-format: yyyy-MM-dd HH:mm:ss.SSS
+    serialization: # Jackson Serialization Configuration
+      # Enable indentation for formatted output
+      indent-output: true
+      # Fail serialization if the input is an empty bean
+      fail-on-empty-beans: false
+    # Default property inclusion for serialization
+    default-property-inclusion: ALWAYS
+    deserialization: # Jackson Deserialization Configuration
+      # Allow unknown properties during deserialization
+      fail-on-unknown-properties: false
+    parser: # Jackson Parser Configuration
+      # Allow unquoted control characters in JSON
+      allow-unquoted-control-chars: true
+      # Allow single quotes in JSON
+      allow-single-quotes: false
+
+mybatis-plus: # MyBatis Plus Configuration
+  mapper-locations: # MyBatis Mapper Locations
+    - classpath*:/com/fulinx/spring-data/mysql/entity/sql/*.xml
+    - classpath*:/com/fulinx/spring-data/mysql/dao/sql/*.xml
+  type-aliases-package: com.fulinx.spring-data # Package for MyBatis type aliases
+  check-config-location: true
+  configuration: # MyBatis Configuration
+    # Enable mapping underscores to camel case
+    map-underscore-to-camel-case: true
+    # Enable MyBatis cache
+    cache-enabled: false
+    # Specify the logging implementation for MyBatis
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config: # MyBatis Plus Global Configuration
+    db-config: # Database Configuration
+      # Specify the ID type for MyBatis Plus
+      id-type: auto
+      capital-mode: false
+      # Specify the table naming strategy
+      table-under-line: true
+      # Specify the value for logic deletion
+      logic-delete-value: 1
+      # Specify the value for non-logic deletion
+      logic-not-delete-value: 0
+      # Specify the insert strategy
+      insert-strategy: not_null
+      # Specify the update strategy
+      update-strategy: ignored
+
+#pagehelper: # PageHelper Configuration
+#  helperDialect: mysql
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql

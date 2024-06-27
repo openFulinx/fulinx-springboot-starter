@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) Minong Tech. 2023.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulinx.spring.data.mysql.dao.mapper.IFileDao">
+
+    <!--通用查询映射结果-->
+    <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbFileEntity">
+        <id column="id" property="id"/>
+        <result column="original_file_name" property="originalFileName" />
+        <result column="file_name" property="fileName" />
+        <result column="file_content_type" property="fileContentType" />
+        <result column="file_extension_name" property="fileExtensionName" />
+        <result column="path" property="path" />
+        <result column="file_url" property="fileUrl" />
+        <result column="is_delete" property="isDelete"/>
+        <result column="remark" property="remark"/>
+        <result column="record_version" property="recordVersion"/>
+        <result column="record_create_name" property="recordCreateName"/>
+        <result column="record_update_name" property="recordUpdateName"/>
+        <result column="record_create_time" property="recordCreateTime"/>
+        <result column="record_update_time" property="recordUpdateTime"/>
+    </resultMap>
+
+    <resultMap id="FileListResultMap" type="com.fulinx.spring.data.mysql.dao.podo.file.FileListResultDo">
+        <id column="id" property="id"/>
+        <result column="original_file_name" property="originalFileName" />
+        <result column="file_name" property="fileName" />
+        <result column="file_content_type" property="fileContentType" />
+        <result column="file_extension_name" property="fileExtensionName" />
+        <result column="path" property="path" />
+        <result column="file_url" property="fileUrl" />
+        <result column="is_delete" property="isDelete"/>
+        <result column="remark" property="remark"/>
+        <result column="record_version" property="recordVersion"/>
+        <result column="record_create_name" property="recordCreateName"/>
+        <result column="record_update_name" property="recordUpdateName"/>
+        <result column="record_create_time" property="recordCreateTime"/>
+        <result column="record_update_time" property="recordUpdateTime"/>
+    </resultMap>
+
+    <select id="list" resultMap="FileListResultMap">
+        SELECT tb_file.*
+        FROM
+        tb_file
+        WHERE
+        1 = 1
+        <if test="id != null">
+            AND tb_file.id = ${id}
+        </if>
+        <if test="fileOriginalName != null">
+            AND tb_file.file_original_name LIKE CONCAT(#{fileOriginalName}, '%')
+        </if>
+        <if test="fileType != null">
+            AND tb_file.file_type = #{fileType}
+        </if>
+        <choose>
+            <when test="isDelete == null">
+                AND tb_file.is_delete = 0
+            </when>
+            <otherwise>
+                AND tb_file.is_delete = #{isDelete}
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="lockById" resultMap="BaseResultMap">
+        SELECT tb_file.*
+        FROM tb_file
+        WHERE id = #{id}
+          AND is_delete = 0 FOR UPDATE
+    </select>
+
+    <select id="lockByIds" resultMap="BaseResultMap">
+        SELECT
+        tb_file.*
+        FROM
+        tb_file
+        WHERE id IN
+        <foreach collection="idList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        AND is_delete = 0 FOR UPDATE
+    </select>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) MiNong Tech. 2023.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulinx.spring.data.mysql.dao.mapper.ISystemUserDao">
+    <!--通用查询映射结果-->
+    <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbSystemUserEntity">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="user_type" property="userType"/>
+        <result column="status" property="status"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="record_version" property="recordVersion"/>
+        <result column="record_create_name" property="recordCreateName"/>
+        <result column="record_update_name" property="recordUpdateName"/>
+        <result column="record_create_time" property="recordCreateTime"/>
+        <result column="record_update_time" property="recordUpdateTime"/>
+    </resultMap>
+
+    <resultMap id="UserListResultMap" type="com.fulinx.spring.data.mysql.dao.podo.systemUser.SystemUserListResultDo">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="user_type" property="userType"/>
+        <result column="status" property="status"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="telephone" property="telephone"/>
+        <result column="post" property="post"/>
+        <result column="record_version" property="recordVersion"/>
+        <result column="record_create_name" property="recordCreateName"/>
+        <result column="record_update_name" property="recordUpdateName"/>
+        <result column="record_create_time" property="recordCreateTime"/>
+        <result column="record_update_time" property="recordUpdateTime"/>
+    </resultMap>
+
+
+    <select id="lockById" resultMap="BaseResultMap">
+        SELECT tb_system_user.*
+        FROM tb_system_user
+        WHERE id = #{id}
+          AND is_delete = 0 FOR UPDATE
+    </select>
+
+    <select id="list" resultMap="UserListResultMap">
+        SELECT tb_system_user.*,(SELECT GROUP_CONCAT(tb_system_user_role.role_id) from tb_system_user_role WHERE tb_system_user.id =
+        tb_system_user_role.system_user_id AND tb_system_user_role.is_delete = 0 ) as roleIds, tb_system_user_profile.first_name,tb_system_user_profile.last_name,
+        tb_system_user_profile.gender,
+        tb_system_user_profile.telephone,
+        tb_system_user_profile.post
+        FROM tb_system_user
+        LEFT JOIN tb_system_user_profile ON tb_system_user.id = tb_system_user_profile.system_user_id
+        WHERE 1 = 1
+        <if test="id !=null">
+            AND tb_system_user.id = #{id}
+        </if>
+        <if test="username !=null">
+            AND tb_system_user.username = #{username}
+        </if>
+        <if test="userType !=null">
+            AND tb_system_user.user_type = #{userType}
+        </if>
+        <choose>
+            <when test="isDelete == null">
+                AND tb_system_user.is_delete = 0
+            </when>
+            <otherwise>
+                AND tb_system_user.is_delete = #{isDelete}
+            </otherwise>
+        </choose>
+        AND tb_system_user.username != 'admin'
+    </select>
+
+</mapper>
