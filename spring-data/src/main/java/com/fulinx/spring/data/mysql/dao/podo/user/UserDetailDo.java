@@ -4,8 +4,8 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.user;
 
-import com.fulinx.spring.data.mysql.entity.TbFileEntity;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,9 +20,9 @@ public class UserDetailDo implements Serializable {
     @Parameter(name = "User Id")
     private Integer userId;
 
-    @Parameter(name = "Nick Name")
-    private String nickname;
+    @Schema(description = "First Name")
+    private String firstName;
 
-    @Parameter(name = "Avatar New File Vo")
-    private TbFileEntity avatarFileVo;
+    @Schema(description = "Last Name")
+    private String lastName;
 }

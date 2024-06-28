@@ -5,11 +5,11 @@ import com.fulinx.spring.data.mysql.entity.TbRolePermissionEntity;
 
 /**
  * <p>
- * 用户角色权限表 Mapper 接口
+ * Role Permission Table Mapper 接口
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 public interface TbRolePermissionMapper extends BaseMapper<TbRolePermissionEntity> {
 

@@ -42,7 +42,8 @@ public class ClientSideUserModelJsonDeserializer extends JsonDeserializer<Client
             TbUserProfileEntity userProfilesEntity = mesUserProfilesEntities.get(0);
             if (userProfilesEntity != null) {
                 clientSideUserModel.setUserProfileId(userProfilesEntity.getId());
-                clientSideUserModel.setFirstName(userProfilesEntity.getName());
+                clientSideUserModel.setFirstName(userProfilesEntity.getFirstName());
+                clientSideUserModel.setLastName(userProfilesEntity.getLastName());
                 clientSideUserModel.setGender(userProfilesEntity.getGender());
                 clientSideUserModel.setPost(userProfilesEntity.getPost());
             }

@@ -5,11 +5,11 @@ import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
 
 /**
  * <p>
- * 用户角色关联关系表 服务类
+ * System User And Role Relationship Table 服务类
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 public interface TbSystemUserRoleEntityService extends IService<TbSystemUserRoleEntity> {
 

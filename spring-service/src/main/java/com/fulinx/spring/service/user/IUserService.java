@@ -20,8 +20,6 @@ import java.util.Optional;
 
 public interface IUserService {
 
-    Boolean approvalAvatar(Integer userId, Integer approvalType) throws BusinessException;
-
     Optional<TbUserEntity> lockById(Serializable id);
 
     Optional<TbUserEntity> getById(Integer id) throws BusinessException;

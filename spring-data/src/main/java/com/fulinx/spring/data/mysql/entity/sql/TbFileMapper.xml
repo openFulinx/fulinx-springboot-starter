@@ -5,7 +5,6 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbFileEntity">
         <id column="id" property="id" />
-        <result column="user_id" property="userId" />
         <result column="original_file_name" property="originalFileName" />
         <result column="file_name" property="fileName" />
         <result column="file_content_type" property="fileContentType" />
@@ -24,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, original_file_name, file_name, file_content_type, file_extension_name, path, file_url, sha256, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
+        id, original_file_name, file_name, file_content_type, file_extension_name, path, file_url, sha256, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
     </sql>
 
 </mapper>

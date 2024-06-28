@@ -5,11 +5,11 @@ import com.fulinx.spring.data.mysql.entity.TbFileEntity;
 
 /**
  * <p>
- * 文件表 服务类
+ * File Table 服务类
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 public interface TbFileEntityService extends IService<TbFileEntity> {
 

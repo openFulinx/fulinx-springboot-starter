@@ -1,7 +1,3 @@
-/*
- * Copyright (c) MiNong Tech. 2023.
- */
-
 package com.fulinx.spring.service.system.user.impl;
 
 import com.baomidou.lock.annotation.Lock4j;
@@ -46,8 +42,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.SecretKey;
 import java.io.Serializable;
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -122,13 +118,13 @@ public class ISystemUserServiceImpl implements ISystemUserService {
                           String post, Integer status) throws BusinessException {
         // 检查userType，当userType不为9999时，不允许新建超级管理员帐户
         if (currentUserType != 9999 && userType == 9999) {
-            log.warn("添加用户失败,{},currentUserType={},userType={}", ErrorMessageEnum.NOT_ALLOW_ADD_SUPERADMIN.getMessage(), currentUserType, userType);
+            log.warn("Create User Failed,{},currentUserType={},userType={}", ErrorMessageEnum.NOT_ALLOW_ADD_SUPERADMIN.getMessage(), currentUserType, userType);
             throw new BusinessException(ErrorMessageEnum.NOT_ALLOW_ADD_SUPERADMIN.getMessage(), ErrorMessageEnum.NOT_ALLOW_ADD_SUPERADMIN.getIndex());
         }
         // 检查用户名是否唯一
         boolean isUsernameUnique = this.isUniqueUserName(username);
         if (isUsernameUnique) {
-            log.warn("添加用户失败,{},username={}", ErrorMessageEnum.USERNAME_ALREADY_EXISTS.getMessage(), username);
+            log.warn("Create User Failed,{},username={}", ErrorMessageEnum.USERNAME_ALREADY_EXISTS.getMessage(), username);
             throw new BusinessException(ErrorMessageEnum.USERNAME_ALREADY_EXISTS.getMessage(), ErrorMessageEnum.USERNAME_ALREADY_EXISTS.getIndex());
         }
         // 新建用户
@@ -146,7 +142,7 @@ public class ISystemUserServiceImpl implements ISystemUserService {
         for (Integer roleId : roleIds) {
             // 查看角色存不存在
             if (tbRolesEntityService.getById(roleId) == null) {
-                log.error("添加用户失败，角色不存在，roleId = {}", ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), roleId);
+                log.error("Create User Failed，{}，roleId = {}", ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), roleId);
                 throw new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
             }
             // 新建用户与角色关联关系
@@ -176,7 +172,7 @@ public class ISystemUserServiceImpl implements ISystemUserService {
     public boolean remove(Integer currentUserType, Integer currentUserId, List<Integer> ids) throws BusinessException {
         // 检查userType，当userType不为9999时，不允许更新超级管理员帐户
         if (currentUserType != 9999) {
-            log.warn("删除用户失败,{}", ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getMessage());
+            log.warn("Delete User Failed,{}", ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getMessage());
             throw new BusinessException(ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getMessage(), ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getIndex());
         }
 
@@ -184,18 +180,18 @@ public class ISystemUserServiceImpl implements ISystemUserService {
         ) {
 
             TbSystemUserEntity tbSystemUserEntity = this.lockById(id).orElseThrow(() -> {
-                log.warn("删除用户失败，用户不存在，id = {}", id);
+                log.warn("Delete User Failed，user does not exist，id = {}", id);
                 return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
             });
             // 不允许删除自己
             if (id == currentUserId) {
-                log.warn("删除用户失败,{}", ErrorMessageEnum.NOT_ALLOW_DELETE_SELF.getMessage());
+                log.warn("Delete User Failed,{}", ErrorMessageEnum.NOT_ALLOW_DELETE_SELF.getMessage());
                 throw new BusinessException(ErrorMessageEnum.NOT_ALLOW_DELETE_SELF.getMessage(), ErrorMessageEnum.NOT_ALLOW_DELETE_SELF.getIndex());
             }
 
             // 如果不是超级管理员，不允许删除超级管理员
             if (currentUserType != 9999 && tbSystemUserEntity.getUserType() == 9999) {
-                log.warn("删除用户失败,{}", ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getMessage());
+                log.warn("Delete User Failed,{}", ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getMessage());
                 throw new BusinessException(ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getMessage(), ErrorMessageEnum.NOT_ALLOW_DELETE_SUPERADMIN.getIndex());
             }
 
@@ -240,17 +236,17 @@ public class ISystemUserServiceImpl implements ISystemUserService {
     public boolean update(Integer currentUserType, Integer id, String username, Integer userType, List<Integer> roleIds, String firstName, String lastName, Integer gender, String telephone, String post, Integer status) throws BusinessException {
         // 检查userType，当userType不为9999时，不允许更新超级管理员帐户
         if (currentUserType != 9999 && userType == 9999) {
-            log.warn("更新用户失败,{},currentUserType={},userType={}", ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), currentUserType, userType);
+            log.warn("Update User Data Failed,{},currentUserType={},userType={}", ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), currentUserType, userType);
             throw new BusinessException(ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getIndex());
         }
         TbSystemUserEntity tbSystemUserEntity = this.lockById(id).orElseThrow(() -> {
-            log.warn("更新用户数据失败，用户不存在，id = {}", id);
+            log.warn("Update User Data Failed，user does not exist，id = {}", id);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         // 检查数据是否已重复（不包含自身）
         List<TbSystemUserEntity> tbSystemUserEntityList = listUserByUsername(username);
         if (CollectionUtils.isNotEmpty(tbSystemUserEntityList) && tbSystemUserEntityList.stream().anyMatch(p -> !IntegerUtils.equals(p.getId(), id))) {
-            log.warn("更新用户数据失败，用户名已存在，username={}", username);
+            log.warn("Update User Data Failed，username has been exist，username={}", username);
             throw new BusinessException(ErrorMessageEnum.USER_UPDATE_FAIL.getMessage(), ErrorMessageEnum.USER_UPDATE_FAIL.getIndex());
         }
         tbSystemUserEntity.setUsername(username);
@@ -258,7 +254,7 @@ public class ISystemUserServiceImpl implements ISystemUserService {
         tbSystemUserEntityService.updateById(tbSystemUserEntity);
         // 更新用户档案数据
         TbSystemUserProfileEntity tbSystemUserProfileEntity = iSystemUserProfileService.lockByUserId(id).orElseThrow(() -> {
-            log.error("更新用户数据失败，用户档案数据不存在, id = {}", id);
+            log.error("Update User Data Failed，user profile does not exist, id = {}", id);
             return new BusinessException(ErrorMessageEnum.USER_ARCHIVE_DATA_NOT_EXISTS.getMessage(), ErrorMessageEnum.USER_ARCHIVE_ADD_FAIL.getIndex());
         });
         tbSystemUserProfileEntity.setGender(gender);
@@ -290,7 +286,7 @@ public class ISystemUserServiceImpl implements ISystemUserService {
             // 查看角色是否存在
             if (!existingRoleIds.contains(roleId)) {
                 if (tbRolesEntityService.getById(roleId) == null) {
-                    log.error("添加用户失败，角色不存在，roleId = {}", roleId);
+                    log.error("Create User Failed，Role does not exist，roleId = {}", roleId);
                     throw new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
                 }
                 // 新建用户与角色关联关系
@@ -345,12 +341,12 @@ public class ISystemUserServiceImpl implements ISystemUserService {
      */
     @Override
     public SystemUserTokenDto login(String username, String password, String captchaKey, String captchaValue) throws BusinessException {
-        boolean isMatch = iCaptchaService.matchCaptchaValue(captchaValue, captchaKey, CaptchaBusinessTypeEnum._登录);
+        boolean isMatch = iCaptchaService.matchCaptchaValue(captchaValue, captchaKey, CaptchaBusinessTypeEnum.LOGIN);
         if (!isMatch) {
-            throw new BusinessException(ErrorMessageEnum.VERIFICATION_CODE_INCORRECT.getMessage(),ErrorMessageEnum.VERIFICATION_CODE_INCORRECT.getIndex());
+            throw new BusinessException(ErrorMessageEnum.VERIFICATION_CODE_INCORRECT.getMessage(), ErrorMessageEnum.VERIFICATION_CODE_INCORRECT.getIndex());
         }
         // 清除REDIS中验证码
-        iCaptchaService.flushCaptchaValue(captchaKey, CaptchaBusinessTypeEnum._登录);
+        iCaptchaService.flushCaptchaValue(captchaKey, CaptchaBusinessTypeEnum.LOGIN);
 
         // 查询用户是否存在
         LambdaQueryWrapper<TbSystemUserEntity> tbSystemUserEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
@@ -359,12 +355,12 @@ public class ISystemUserServiceImpl implements ISystemUserService {
         int count = tbSystemUserEntityList.size();
         // 如果列表为空，抛出错误
         if (CollectionUtils.isEmpty(tbSystemUserEntityList)) {
-            log.debug("用户登录失败,失败原因：{},username = {}, password = {}", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), username, password);
+            log.debug("Login Failed,Failed Reason：{},username = {}, password = {}", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), username, password);
             throw new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         }
         // 如果列表Size大于1, 抛出错误
         if (count > 1) {
-            log.debug("用户登录失败,失败原因：{}, 该帐户认证时，tb_users返回了{}条数据， username = {}, password = {}", ErrorMessageEnum.SYSTEM_ERROR.getMessage(), count, username, password);
+            log.debug("Login Failed,Failed Reason：{}, when user authentication，tb_users returns {} records， username = {}, password = {}", ErrorMessageEnum.SYSTEM_ERROR.getMessage(), count, username, password);
             throw new BusinessException(ErrorMessageEnum.SYSTEM_ERROR.getMessage(), ErrorMessageEnum.SYSTEM_ERROR.getIndex());
         }
         // 取出用户实例
@@ -372,17 +368,17 @@ public class ISystemUserServiceImpl implements ISystemUserService {
         Integer systemUserId = tbSystemUserEntity.getId();
         // 校验密码
         if (!bCryptPasswordEncoder.matches(StringUtils.join(password, tbSystemUserEntity.getSalt()), tbSystemUserEntity.getPassword())) {
-            log.debug("用户登录失败, 失败原因:{}, username = {}, password = {}", ErrorMessageEnum.USERNAME_PASSWORD_INCORRECT.getMessage(), username, password);
+            log.debug("Login Failed, Failed Reason:{}, username = {}, password = {}", ErrorMessageEnum.USERNAME_PASSWORD_INCORRECT.getMessage(), username, password);
             throw new BusinessException(ErrorMessageEnum.USERNAME_PASSWORD_INCORRECT.getMessage(), ErrorMessageEnum.USERNAME_PASSWORD_INCORRECT.getIndex());
         }
         // 查看用户状态是否在枚举中
         AuthenticationStatusEnum authenticationStatusEnum = AuthenticationStatusEnum.of(tbSystemUserEntity.getStatus()).orElseThrow(() -> {
-            log.error("用户登录失败, 失败原因: {}, 状态不是有效值, username = {}, password = {} , status = {}", ErrorMessageEnum.SYSTEM_ERROR.getMessage(), tbSystemUserEntity.getUsername(), tbSystemUserEntity.getPassword(), tbSystemUserEntity.getStatus());
+            log.error("Login Failed, Failed Reason: {}, status is not a valid value, username = {}, password = {} , status = {}", ErrorMessageEnum.SYSTEM_ERROR.getMessage(), tbSystemUserEntity.getUsername(), tbSystemUserEntity.getPassword(), tbSystemUserEntity.getStatus());
             return new BusinessException(ErrorMessageEnum.SYSTEM_ERROR.getMessage(), ErrorMessageEnum.SYSTEM_ERROR.getIndex());
         });
         // 状态状态是否为禁用
         if (AuthenticationStatusEnum._已禁用 == authenticationStatusEnum) {
-            log.warn("用户登录失败，失败原因：{}, username = {}, password = {}", ErrorMessageEnum.USER_DISABLED.getMessage(), username, password);
+            log.warn("Login Failed，Failed Reason：{}, username = {}, password = {}", ErrorMessageEnum.USER_DISABLED.getMessage(), username, password);
             throw new BusinessException(ErrorMessageEnum.USER_DISABLED.getMessage(), ErrorMessageEnum.USER_DISABLED.getIndex());
         }
         // 取出角色对应的权限
@@ -464,11 +460,15 @@ public class ISystemUserServiceImpl implements ISystemUserService {
      */
     @Override
     public SystemUserAuthenticationTokenDto refreshToken(String refreshToken) throws BusinessException {
-        Key signingKey = jwtFactory.createSigningKey();
-        JwtParser jwtParser = Jwts.parser().setSigningKey(signingKey).build();
+        SecretKey signingKey = jwtFactory.createSigningKey();
+
+        JwtParser jwtParser = Jwts.parser()
+                .verifyWith(signingKey)
+                .build();
+
         Jws<Claims> claimsJws = jwtParser.parseClaimsJws(refreshToken);
 
-        Claims claims = claimsJws.getBody();
+        Claims claims = claimsJws.getPayload();
         if (!jwtFactory.isRefreshToken(claims)) {
             log.error("The token is not refresh token, refreshToken={}", refreshToken);
             throw new BusinessException(ErrorMessageEnum.SYSTEM_ERROR.getMessage(), ErrorMessageEnum.SYSTEM_ERROR.getIndex());
@@ -495,12 +495,12 @@ public class ISystemUserServiceImpl implements ISystemUserService {
     public void updatePassword(Integer currentUserType, Integer id, String newPassword) throws BusinessException {
         // 检查userType，当userType不为9999时，不允许更新超级管理员帐户
         if (currentUserType != 9999) {
-            log.warn("更新用户失败,{},currentUserType={}", ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), currentUserType);
+            log.warn("Update Password Failed,{},currentUserType={}", ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), currentUserType);
             throw new BusinessException(ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getIndex());
         }
         // 查找用户是否存在
         TbSystemUserEntity tbSystemUserEntity = this.lockById(id).orElseThrow(() -> {
-            log.error("修改密码失败，失败原因：{},id = {},  newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, newPassword);
+            log.error("修改密码失败，Failed Reason：{},id = {},  newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, newPassword);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         String salt = String.valueOf(System.currentTimeMillis());
@@ -522,12 +522,12 @@ public class ISystemUserServiceImpl implements ISystemUserService {
     public void resetPassword(Integer id, String oldPassword, String newPassword) throws BusinessException {
         // 查找用户是否存在
         TbSystemUserEntity tbSystemUserEntity = this.lockById(id).orElseThrow(() -> {
-            log.error("修改密码失败，失败原因：{},id = {}, oldPassword = {}, newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, oldPassword, newPassword);
+            log.error("Reset Password，Failed Reason：{},id = {}, oldPassword = {}, newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, oldPassword, newPassword);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         // 校验旧密码是否正确
         if (!bCryptPasswordEncoder.matches(StringUtils.join(oldPassword, tbSystemUserEntity.getSalt()), tbSystemUserEntity.getPassword())) {
-            log.debug("更新密码失败，失败原因: {}, id = {}, oldPassword = {}, newPassword = {}", ErrorMessageEnum.USER_OLD_PASSWORD_INCORRECT.getMessage(), id, oldPassword, newPassword);
+            log.debug("Reset Password，Failed Reason: {}, id = {}, oldPassword = {}, newPassword = {}", ErrorMessageEnum.USER_OLD_PASSWORD_INCORRECT.getMessage(), id, oldPassword, newPassword);
             throw new BusinessException(ErrorMessageEnum.USER_OLD_PASSWORD_INCORRECT.getMessage(), ErrorMessageEnum.USER_OLD_PASSWORD_INCORRECT.getIndex());
         }
         String salt = String.valueOf(System.currentTimeMillis());

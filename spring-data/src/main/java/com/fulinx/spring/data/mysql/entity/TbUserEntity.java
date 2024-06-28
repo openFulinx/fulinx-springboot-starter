@@ -12,67 +12,67 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 用户表
+ * User Table
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("tb_user")
-@Schema(name = "TbUserEntity", description = "用户表")
+@Schema(name = "TbUserEntity", description = "User Table")
 public class TbUserEntity extends Model<TbUserEntity> {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "ID")
+    @Schema(description = "User Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(description = "邮箱")
+    @Schema(description = "Email")
     private String email;
 
-    @Schema(description = "密码")
+    @Schema(description = "Password")
     private String password;
 
-    @Schema(description = "盐")
+    @Schema(description = "Salt")
     private String salt;
 
-    @Schema(description = "邮箱是否验证，0：未验证，1：已验证")
-    private Integer isVerify;
+    @Schema(description = "Email Verification Status: 0 - Unverified, 1 - Verified")
+    private Integer isEmailVerify;
 
-    @Schema(description = "用户类型:1,普通用户，9999超级管理员")
+    @Schema(description = "User Type: 1 - Regular User, 9999 - Super Administrator")
     private Integer userType;
 
-    @Schema(description = "状态: 1: 启用,  9: 禁用, ")
+    @Schema(description = "Status: 1 - Enabled, 9 - Disabled")
     private Integer status;
 
-    @Schema(description = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
     @TableLogic
     private Integer isDelete;
 
-    @Schema(description = "备注")
+    @Schema(description = "Remark")
     private String remark;
 
-    @Schema(description = "记录版本")
+    @Schema(description = "Record Version")
     @Version
     private Integer recordVersion;
 
-    @Schema(description = "创建者")
+    @Schema(description = "Record Create Name")
     @TableField(fill = FieldFill.INSERT)
     private String recordCreateName;
 
-    @Schema(description = "更新者")
+    @Schema(description = "Record Update Name")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private String recordUpdateName;
 
-    @Schema(description = "创建时间")
+    @Schema(description = "Record Create Time")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime recordCreateTime;
 
-    @Schema(description = "更新时间")
+    @Schema(description = "Record Update Time")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime recordUpdateTime;
 
@@ -84,7 +84,7 @@ public class TbUserEntity extends Model<TbUserEntity> {
 
     public static final String SALT = "salt";
 
-    public static final String IS_VERIFY = "is_verify";
+    public static final String IS_EMAIL_VERIFY = "is_email_verify";
 
     public static final String USER_TYPE = "user_type";
 

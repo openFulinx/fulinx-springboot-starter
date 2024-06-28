@@ -57,11 +57,10 @@ public class IPermissionServiceImpl implements IPermissionService {
         // 查询permissionCode是否存在，不包含自身
         boolean isUniquePermissionCode = this.isUniquePermissionCode(permissionCode);
         if (isUniquePermissionCode) {
-            log.warn("权限创建失败，失败原因{}, permissionCode = {}", ErrorMessageEnum.PERMISSION_IDENTIFIER_DUPLICATE.getMessage(), permissionCode);
+            log.warn("The permission creation failed，failed reason:{}, permissionCode = {}", ErrorMessageEnum.PERMISSION_IDENTIFIER_DUPLICATE.getMessage(), permissionCode);
             throw new BusinessException(ErrorMessageEnum.PERMISSION_IDENTIFIER_DUPLICATE.getMessage(), ErrorMessageEnum.PERMISSION_IDENTIFIER_DUPLICATE.getIndex());
         }
         TbPermissionEntity tbPermissionEntity = new TbPermissionEntity();
-        tbPermissionEntity.setPermissionName(permissionName);
         tbPermissionEntity.setPermissionParentId(permissionParentId);
         tbPermissionEntity.setPermissionCode(permissionCode);
         tbPermissionEntity.setPermissionType(permissionType);
@@ -89,7 +88,7 @@ public class IPermissionServiceImpl implements IPermissionService {
     @Override
     public Optional<TbPermissionEntity> getById(Integer id) throws BusinessException {
         this.lockById(id).orElseThrow(() -> {
-            log.warn("查看权限失败，权限不存在，id = {}", id);
+            log.warn("Failed to view permission, permission does not exist，id = {}", id);
             return new BusinessException(ErrorMessageEnum.PERMISSION_DATA_NOT_EXISTS.getMessage(), ErrorMessageEnum.PERMISSION_DATA_NOT_EXISTS.getIndex());
         });
         Optional<TbPermissionEntity> tbPermissionEntity = Optional.ofNullable(tbPermissionEntityService.getById(id));

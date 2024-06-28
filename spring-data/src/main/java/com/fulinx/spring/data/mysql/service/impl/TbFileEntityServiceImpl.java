@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 文件表 服务实现类
+ * File Table 服务实现类
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Service
 public class TbFileEntityServiceImpl extends ServiceImpl<TbFileMapper, TbFileEntity> implements TbFileEntityService {

@@ -12,64 +12,67 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 用户资料
+ * System User Profile Table
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("tb_system_user_profile")
-@Schema(name = "TbSystemUserProfileEntity", description = "用户资料")
+@Schema(name = "TbSystemUserProfileEntity", description = "System User Profile Table")
 public class TbSystemUserProfileEntity extends Model<TbSystemUserProfileEntity> {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "ID")
+    @Schema(description = "System User Profile Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(description = "用户ID")
+    @Schema(description = "User Id")
     private Integer systemUserId;
 
-    @Schema(description = "姓名")
-    private String name;
+    @Schema(description = "First Name")
+    private String firstName;
 
-    @Schema(description = "性别")
+    @Schema(description = "Last Name")
+    private String lastName;
+
+    @Schema(description = "Gender, 1 - Male, 2 - Female")
     private Integer gender;
 
-    @Schema(description = "手机")
+    @Schema(description = "Telephone")
     private String telephone;
 
-    @Schema(description = "职务")
+    @Schema(description = "Post")
     private String post;
 
-    @Schema(description = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
     @TableLogic
     private Integer isDelete;
 
-    @Schema(description = "备注")
+    @Schema(description = "Remark")
     private String remark;
 
-    @Schema(description = "记录版本")
+    @Schema(description = "Record Version")
     @Version
     private Integer recordVersion;
 
-    @Schema(description = "创建者")
+    @Schema(description = "Record Create Name")
     @TableField(fill = FieldFill.INSERT)
     private String recordCreateName;
 
-    @Schema(description = "更新者")
+    @Schema(description = "Record Update Name")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private String recordUpdateName;
 
-    @Schema(description = "创建时间")
+    @Schema(description = "Record Create Time")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime recordCreateTime;
 
-    @Schema(description = "更新时间")
+    @Schema(description = "Record Update Time")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime recordUpdateTime;
 
@@ -77,7 +80,9 @@ public class TbSystemUserProfileEntity extends Model<TbSystemUserProfileEntity> 
 
     public static final String SYSTEM_USER_ID = "system_user_id";
 
-    public static final String NAME = "name";
+    public static final String FIRST_NAME = "first_name";
+
+    public static final String LAST_NAME = "last_name";
 
     public static final String GENDER = "gender";
 

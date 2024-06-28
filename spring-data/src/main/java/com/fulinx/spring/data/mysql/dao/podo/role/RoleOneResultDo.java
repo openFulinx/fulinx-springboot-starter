@@ -4,8 +4,11 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.role;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
+import com.fulinx.spring.data.mysql.entity.TbRolePermissionEntity;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -21,37 +24,35 @@ public class RoleOneResultDo implements Serializable {
     @Serial
     private static final long serialVersionUID = -2603549198404682336L;
 
-    @Parameter(name = "ID")
+    @Schema(description = "Role Id")
     private Integer id;
 
-    @Parameter(name = "角色类型")
-    private Integer roleType;
-
-    @Parameter(name = "角色名称")
+    @Schema(description = "Role Name")
     private String roleName;
 
-    @Parameter(name = "权限ID列表")
-    private List rolePermissions;
+    @Parameter(name = "List of Permission Corresponding to Roles")
+    private List<TbRolePermissionEntity> rolePermissions;
 
-    @Parameter(name = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
+    @TableLogic
     private Integer isDelete;
 
-    @Parameter(name = "记录版本")
+    @Schema(description = "Remark")
+    private String remark;
+
+    @Schema(description = "Record Version")
     @Version
     private Integer recordVersion;
 
-    @Parameter(name = "备注")
-    private String remark;
-
-    @Parameter(name = "创建者")
+    @Schema(description = "Record Create Name")
     private String recordCreateName;
 
-    @Parameter(name = "更新者")
+    @Schema(description = "Record Update Name")
     private String recordUpdateName;
 
-    @Parameter(name = "创建时间")
+    @Schema(description = "Record Create Time")
     private LocalDateTime recordCreateTime;
 
-    @Parameter(name = "更新时间")
+    @Schema(description = "Record Update Time")
     private LocalDateTime recordUpdateTime;
 }

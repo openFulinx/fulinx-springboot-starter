@@ -4,7 +4,7 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.systemUser;
 
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,21 +23,21 @@ public class SystemUserListConditionPo implements Serializable {
     @Serial
     private static final long serialVersionUID = -4381653809235656202L;
 
-    @Parameter(name = "主键ID")
+    @Schema(description = "System User Id")
     private Integer id;
 
-    @Parameter(name = "用户名")
+    @Schema(description = "Username")
     private String username;
 
-    @Parameter(name = "用户类型")
+    @Schema(description = "User Type, 1: Normal, 9999: administrator")
     private Integer userType;
 
-    @Parameter(name = "手机号码")
+    @Schema(description = "Telephone")
     private String telephone;
 
-    @Parameter(name = "认证启用状态，（1：启用，9：已禁用）")
+    @Schema(description = "Status, 0: Disable, 1: Enable")
     private Integer status;
 
-    @Parameter(name = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
     private Integer isDelete;
 }

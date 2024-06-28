@@ -5,11 +5,11 @@ import com.fulinx.spring.data.mysql.entity.TbSystemUserProfileEntity;
 
 /**
  * <p>
- * 用户资料 服务类
+ * System User Profile Table 服务类
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 public interface TbSystemUserProfileEntityService extends IService<TbSystemUserProfileEntity> {
 

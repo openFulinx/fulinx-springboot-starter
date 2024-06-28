@@ -81,7 +81,7 @@ public class IRoleServiceImpl implements IRoleService {
     @Override
     public Optional<TbRoleEntity> getById(Integer id) throws BusinessException {
         this.lockById(id).orElseThrow(() -> {
-            log.warn("查看角色失败，角色不存在，id = {}", id);
+            log.warn("View Role Failed，Role Does not exist，id = {}", id);
             return new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
         });
         TbRoleEntity tbRolesEntity = tbRolesEntityService.getById(id);

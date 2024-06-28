@@ -12,78 +12,68 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 用户角色权限表
+ * Permission Table
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("tb_permission")
-@Schema(name = "TbPermissionEntity", description = "用户角色权限表")
+@Schema(name = "TbPermissionEntity", description = "Permission Table")
 public class TbPermissionEntity extends Model<TbPermissionEntity> {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "ID")
+    @Schema(description = "Permission Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(description = "权限名称")
-    private String permissionName;
-
-    @Schema(description = "权限父级ID")
-    private Integer permissionParentId;
-
-    @Schema(description = "权限唯一标识符")
+    @Schema(description = "Permission Unique Identifier")
     private String permissionCode;
 
-    @Schema(description = "权限类型：1. 节点 2. 分支")
+    @Schema(description = "Permission Parent Id")
+    private Integer permissionParentId;
+
+    @Schema(description = "Permission Type: 1. Node 2. Branch")
     private Integer permissionType;
 
-    @Schema(description = "权限描述")
-    private String description;
-
-    @Schema(description = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
     @TableLogic
     private Integer isDelete;
 
-    @Schema(description = "备注")
+    @Schema(description = "Remark")
     private String remark;
 
-    @Schema(description = "记录版本")
+    @Schema(description = "Record Version")
     @Version
     private Integer recordVersion;
 
-    @Schema(description = "创建者")
+    @Schema(description = "Record Create Name")
     @TableField(fill = FieldFill.INSERT)
     private String recordCreateName;
 
-    @Schema(description = "更新者")
+    @Schema(description = "Record Update Name")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private String recordUpdateName;
 
-    @Schema(description = "创建时间")
+    @Schema(description = "Record Create Time")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime recordCreateTime;
 
-    @Schema(description = "更新时间")
+    @Schema(description = "Record Update Time")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime recordUpdateTime;
 
     public static final String ID = "id";
 
-    public static final String PERMISSION_NAME = "permission_name";
+    public static final String PERMISSION_CODE = "permission_code";
 
     public static final String PERMISSION_PARENT_ID = "permission_parent_id";
 
-    public static final String PERMISSION_CODE = "permission_code";
-
     public static final String PERMISSION_TYPE = "permission_type";
-
-    public static final String DESCRIPTION = "description";
 
     public static final String IS_DELETE = "is_delete";
 

@@ -5,11 +5,11 @@ import com.fulinx.spring.data.mysql.entity.TbPermissionEntity;
 
 /**
  * <p>
- * 用户角色权限表 服务类
+ * Permission Table 服务类
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 public interface TbPermissionEntityService extends IService<TbPermissionEntity> {
 

@@ -5,11 +5,9 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbPermissionEntity">
         <id column="id" property="id" />
-        <result column="permission_name" property="permissionName" />
-        <result column="permission_parent_id" property="permissionParentId" />
         <result column="permission_code" property="permissionCode" />
+        <result column="permission_parent_id" property="permissionParentId" />
         <result column="permission_type" property="permissionType" />
-        <result column="description" property="description" />
         <result column="is_delete" property="isDelete" />
         <result column="remark" property="remark" />
         <result column="record_version" property="recordVersion" />
@@ -21,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, permission_name, permission_parent_id, permission_code, permission_type, description, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
+        id, permission_code, permission_parent_id, permission_type, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
     </sql>
 
 </mapper>

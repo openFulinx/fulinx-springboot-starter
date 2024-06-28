@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Service
 public class TbSystemUserEntityServiceImpl extends ServiceImpl<TbSystemUserMapper, TbSystemUserEntity> implements TbSystemUserEntityService {

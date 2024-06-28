@@ -1,5 +1,6 @@
 package com.fulinx.spring.service.enums;
 
+import com.fulinx.spring.core.utils.MessageSourceUtils;
 import lombok.Getter;
 
 import java.util.*;
@@ -7,13 +8,13 @@ import java.util.stream.Collectors;
 
 public enum CaptchaBusinessTypeEnum {
 
-    _登录(1, "登录"),
-    _注册(2, "注册"),
-    _修改密码(3, "修改密码"),
-    _找回密码(4, "找回密码");
+    LOGIN(1, "captcha.business.type.login"),
+    REGISTER(2, "captcha.business.type.register"),
+    EDIT_PASSWORD(3, "captcha.business.type.edit.password"),
+    RESET_PASSWORD(4, "captcha.business.type.reset.password");
 
     @Getter
-    private final String name;
+    private final String messageKey;
     @Getter
     private final Integer index;
     @Getter
@@ -25,9 +26,13 @@ public enum CaptchaBusinessTypeEnum {
         }
     }
 
-    CaptchaBusinessTypeEnum(Integer index, String name) {
-        this.name = name;
+    CaptchaBusinessTypeEnum(Integer index, String messageKey) {
+        this.messageKey = messageKey;
         this.index = index;
+    }
+
+    public String getMessage() {
+        return MessageSourceUtils.getMessage(messageKey);
     }
 
     public static Optional<CaptchaBusinessTypeEnum> of(Integer index) {
@@ -38,9 +43,9 @@ public enum CaptchaBusinessTypeEnum {
         return map.get(index) != null;
     }
 
-    public static Optional<String> getName(Integer index) {
+    public static Optional<String> getMessageByIndex(Integer index) {
         CaptchaBusinessTypeEnum e = map.get(index);
-        return e == null ? Optional.empty() : Optional.of(e.name);
+        return e == null ? Optional.empty() : Optional.of(e.getMessage());
     }
 
     public static List<CaptchaBusinessTypeEnum> getElementList() {
@@ -51,12 +56,12 @@ public enum CaptchaBusinessTypeEnum {
         return map.values().stream().map(CaptchaBusinessTypeEnum::getIndex).collect(Collectors.toList());
     }
 
-    public static List<String> getNameList() {
-        return map.values().stream().map(CaptchaBusinessTypeEnum::getName).collect(Collectors.toList());
+    public static List<String> getMessageKeyList() {
+        return map.values().stream().map(CaptchaBusinessTypeEnum::getMessage).collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
-        return name;
+        return getMessage();
     }
 }

@@ -4,7 +4,9 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.role;
 
-import io.swagger.v3.oas.annotations.Parameter;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,30 +21,32 @@ public class RoleListResultDo implements Serializable {
     @Serial
     private static final long serialVersionUID = -7026957750457725266L;
 
-    @Parameter(name = "ID")
+    @Schema(description = "Role Id")
     private Integer id;
 
-    @Parameter(name = "角色名称")
+    @Schema(description = "Role Name")
     private String roleName;
 
-    @Parameter(name = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
+    @TableLogic
     private Integer isDelete;
 
-    @Parameter(name = "备注")
+    @Schema(description = "Remark")
     private String remark;
 
-    @Parameter(name = "记录版本")
+    @Schema(description = "Record Version")
+    @Version
     private Integer recordVersion;
 
-    @Parameter(name = "创建者")
+    @Schema(description = "Record Create Name")
     private String recordCreateName;
 
-    @Parameter(name = "更新者")
+    @Schema(description = "Record Update Name")
     private String recordUpdateName;
 
-    @Parameter(name = "创建时间")
+    @Schema(description = "Record Create Time")
     private LocalDateTime recordCreateTime;
 
-    @Parameter(name = "更新时间")
+    @Schema(description = "Record Update Time")
     private LocalDateTime recordUpdateTime;
 }

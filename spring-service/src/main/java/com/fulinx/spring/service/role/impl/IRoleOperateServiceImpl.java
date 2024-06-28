@@ -73,22 +73,22 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
         // 校验权限名称是否存在
         boolean isUniqueRoleName = iRoleService.isUniqueRoleName(roleName);
         if (isUniqueRoleName) {
-            log.error("角色创建失败，失败原因, {}, roleName = {}", ErrorMessageEnum.ROLE_NAME_DUPLICATE, roleName);
+            log.error("Create Role Failed，failed reason, {}, roleName = {}", ErrorMessageEnum.ROLE_NAME_DUPLICATE, roleName);
             throw new BusinessException(ErrorMessageEnum.ROLE_NAME_DUPLICATE.getMessage(), ErrorMessageEnum.ROLE_NAME_DUPLICATE.getIndex());
         }
         // 检查权限列表是否为空
         if (permissionIds.isEmpty()) {
-            log.error("角色创建失败，失败原因, {}, roleName = {}", ErrorMessageEnum.ROLE_PERMISSION_CANNOT_BE_EMPTY, roleName);
+            log.error("Create Role Failed，failed reason, {}, roleName = {}", ErrorMessageEnum.ROLE_PERMISSION_CANNOT_BE_EMPTY, roleName);
             throw new BusinessException(ErrorMessageEnum.ROLE_PERMISSION_CANNOT_BE_EMPTY.getMessage(), ErrorMessageEnum.ROLE_PERMISSION_CANNOT_BE_EMPTY.getIndex());
         }
         TbRoleEntity tbRolesEntity = iRoleService.create(roleName).orElseThrow(() -> {
-            log.error("角色创建失败，{}, roleName = {}", ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), roleName);
+            log.error("Create Role Failed，failed reason，{}, roleName = {}", ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), roleName);
             return new BusinessException(ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), ErrorMessageEnum.ROLE_CREATE_FAIL.getIndex());
         });
         for (Integer permissionId : permissionIds) {
             // 判断permissionId是否在数据库中
             if (iPermissionService.getById(permissionId).isEmpty()) {
-                log.error("角色创建失败，失败原因, {}, permissionId = {}", ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), permissionId);
+                log.error("Create Role Failed，failed reason, {}, permissionId = {}", ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), permissionId);
                 throw new BusinessException(ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), ErrorMessageEnum.ROLE_CREATE_FAIL.getIndex());
             }
             iRolePermissionService.create(tbRolesEntity.getId(), permissionId);
@@ -108,15 +108,15 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
     public boolean remove(List<Integer> ids) throws BusinessException {
         for (Integer id : ids) {
             TbRoleEntity tbRolesEntity = iRoleService.lockById(id).orElseThrow(() -> {
-                log.warn("删除角色失败，角色不存在, id = {}", id);
+                log.warn("Delete Role Failed，failed reason, id = {}", id);
                 return new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
             });
             // 如果Role被引用，不允许删除
             LambdaQueryWrapper<TbSystemUserRoleEntity> tbUserRolesEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-            tbUserRolesEntityLambdaQueryWrapper.eq(TbSystemUserRoleEntity::getRoleId,id);
+            tbUserRolesEntityLambdaQueryWrapper.eq(TbSystemUserRoleEntity::getRoleId, id);
             List<TbSystemUserRoleEntity> tbUserRolesEntityList = tbSystemUserRoleEntityService.list(tbUserRolesEntityLambdaQueryWrapper);
-            if(tbUserRolesEntityList.size() > 0){
-                log.warn("删除角色失败，角色被引用, id = {}", id);
+            if (tbUserRolesEntityList.size() > 0) {
+                log.error("Delete Role Failed，failed reason: Role Has Been Referenced, id = {}", id);
                 throw new BusinessException(ErrorMessageEnum.ROLE_REFERENCED.getMessage(), ErrorMessageEnum.ROLE_REFERENCED.getIndex());
             }
 
@@ -148,13 +148,13 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
     @Transactional(rollbackFor = {Exception.class})
     public boolean update(Integer id, String roleName, List<Integer> permissionIds, List<Integer> deletedPermissionIds) throws BusinessException {
         TbRoleEntity tbRolesEntity = iRoleService.lockById(id).orElseThrow(() -> {
-            log.warn("删除角色失败，角色不存在, id = {}", id);
+            log.warn("Update Role Failed，failed reason: Role Does Not Exist, id = {}", id);
             return new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
         });
         // 检查数据是否已重复（不包含自身）
         List<TbRoleEntity> tbRolesEntities = listRolesByName(roleName);
         if (CollectionUtils.isNotEmpty(tbRolesEntities) && tbRolesEntities.stream().anyMatch(p -> !IntegerUtils.equals(p.getId(), id))) {
-            log.warn("更新角色失败，角色名称已存在，roleName={}", roleName);
+            log.warn("Update Role Failed，failed reason:，Role Name Has Been Used，roleName={}", roleName);
             throw new BusinessException(ErrorMessageEnum.ROLE_NAME_DUPLICATE.getMessage(), ErrorMessageEnum.ROLE_NAME_DUPLICATE.getIndex());
         }
         tbRolesEntity.setRoleName(roleName);
@@ -207,7 +207,7 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
     public Optional<RoleOneResultDto> getById(Integer id) throws BusinessException {
         TbRoleEntity role = tbRolesEntityService.getById(id);
         if (role == null) {
-            log.error("查看角色失败，角色不存在,{}", ErrorMessageEnum.ROLE_NOT_EXISTS, id);
+            log.error("View Role Failed，failed reason:，Role does not exist,{}", ErrorMessageEnum.ROLE_NOT_EXISTS, id);
             throw new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
         }
         RoleOneResultDto oneResultDto = MiscUtils.copyProperties(role, RoleOneResultDto.class);

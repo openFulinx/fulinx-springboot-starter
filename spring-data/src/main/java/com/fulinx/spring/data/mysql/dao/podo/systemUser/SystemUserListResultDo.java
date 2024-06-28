@@ -4,8 +4,9 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.systemUser;
 
-import com.fulinx.spring.data.mysql.entity.TbFileEntity;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,66 +21,50 @@ public class SystemUserListResultDo implements Serializable {
     @Serial
     private static final long serialVersionUID = -3097863283384102285L;
 
-    @Parameter(name = "ID")
+    @Schema(description = "System User Id")
     private Integer id;
 
-    @Parameter(name = "昵称")
-    private String nickname;
+    @Schema(name = "User Role Ids")
+    private String userRoleIds;
 
-    @Parameter(name = "用户头像")
-    private TbFileEntity userAvatar;
-
-    @Parameter(name = "用户头像状态")
-    private Integer userAvatarStatus;
-
-    @Parameter(name = "用户角色列表")
-    private String roleIds;
-
-    @Parameter(name = "姓名")
-    private String name;
-
-    @Parameter(name = "姓")
+    @Schema(description = "First Name")
     private String firstName;
 
-    @Parameter(name = "名")
+    @Schema(description = "Last Name")
     private String lastName;
 
-    @Parameter(name = "生日")
-    private Integer birthday;
-
-    @Parameter(name = "性别")
+    @Schema(description = "Gender, 1 - Male, 2 - Female")
     private Integer gender;
 
-    @Parameter(name = "公司名称")
-    private String company;
-
-    @Parameter(name = "手机")
+    @Schema(description = "Telephone")
     private String telephone;
 
-    @Parameter(name = "职务")
+    @Schema(description = "Post")
     private String post;
 
-    @Parameter(name = "个人简介")
-    private String personalInformation;
-
-    @Parameter(name = "状态: 0: 禁用, 1: 启用")
+    @Schema(description = "Status, 0: Disable, 1: Enable")
     private Integer status;
 
-    @Parameter(name = "备注")
+    @Schema(description = "Soft Delete Flag")
+    @TableLogic
+    private Integer isDelete;
+
+    @Schema(description = "Remark")
     private String remark;
 
-    @Parameter(name = "记录版本")
+    @Schema(description = "Record Version")
+    @Version
     private Integer recordVersion;
 
-    @Parameter(name = "创建者")
+    @Schema(description = "Record Create Name")
     private String recordCreateName;
 
-    @Parameter(name = "更新者")
+    @Schema(description = "Record Update Name")
     private String recordUpdateName;
 
-    @Parameter(name = "创建时间")
+    @Schema(description = "Record Create Time")
     private LocalDateTime recordCreateTime;
 
-    @Parameter(name = "更新时间")
+    @Schema(description = "Record Update Time")
     private LocalDateTime recordUpdateTime;
 }

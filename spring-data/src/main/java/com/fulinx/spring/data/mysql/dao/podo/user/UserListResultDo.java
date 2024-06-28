@@ -4,14 +4,14 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.user;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,70 +21,62 @@ public class UserListResultDo implements Serializable {
     @Serial
     private static final long serialVersionUID = 615235140817012220L;
 
-    @Parameter(name = "ID")
+    @Schema(description = "User Id")
     private Integer id;
 
-    @Parameter(name = "Telephone")
+    @Schema(name = "Telephone")
     private String telephone;
 
-    @Parameter(name = "Email")
+    @Schema(name = "Email")
     private String email;
 
-    @Parameter(name = "Password")
+    @Schema(name = "Password")
     private String password;
 
-    @Parameter(name = "Salt")
+    @Schema(name = "Salt")
     private String salt;
 
-    @Parameter(name = "Is Email Verify, 0: No, 1: Yes")
+    @Schema(description = "Email Verification Status: 0 - Unverified, 1 - Verified")
     private Integer isEmailVerify;
 
-    @Parameter(name = "Nick Name")
+    @Schema(name = "Nick Name")
     private String nickname;
 
-    @Parameter(name = "First Name")
+    @Schema(name = "First Name")
     private String firstName;
 
-    @Parameter(name = "Last Name")
+    @Schema(name = "Last Name")
     private String lastName;
 
-    @Parameter(name = "Birthday")
-    private LocalDate birthday;
-
-    @Parameter(name = "Gender, 1: male, 2: female, 3: neutral, 4: private")
+    @Schema(description = "Gender, 1 - Male, 2 - Female")
     private Integer gender;
 
-    @Parameter(name = "Company")
-    private String company;
-
-    @Parameter(name = "Post")
+    @Schema(name = "Post")
     private String post;
 
-    @Parameter(name = "Personal Information")
-    @TableField("personal_information")
-    private String personalInformation;
-
-    @Parameter(name = "Status, 0: Disabled ,1: Enabled")
+    @Schema(name = "Status, 0: Disabled ,1: Enabled")
     private Integer status;
 
-    @Parameter(name = "Soft Delete Flag")
+    @Schema(description = "Soft Delete Flag")
+    @TableLogic
     private Integer isDelete;
 
-    @Parameter(name = "备注")
+    @Schema(description = "Remark")
     private String remark;
 
-    @Parameter(name = "记录版本")
+    @Schema(description = "Record Version")
+    @Version
     private Integer recordVersion;
 
-    @Parameter(name = "创建者")
+    @Schema(description = "Record Create Name")
     private String recordCreateName;
 
-    @Parameter(name = "更新者")
+    @Schema(description = "Record Update Name")
     private String recordUpdateName;
 
-    @Parameter(name = "创建时间")
+    @Schema(description = "Record Create Time")
     private LocalDateTime recordCreateTime;
 
-    @Parameter(name = "更新时间")
+    @Schema(description = "Record Update Time")
     private LocalDateTime recordUpdateTime;
 }

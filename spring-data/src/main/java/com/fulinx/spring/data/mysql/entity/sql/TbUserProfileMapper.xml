@@ -6,7 +6,8 @@
     <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbUserProfileEntity">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
-        <result column="name" property="name" />
+        <result column="first_name" property="firstName" />
+        <result column="last_name" property="lastName" />
         <result column="gender" property="gender" />
         <result column="telephone" property="telephone" />
         <result column="post" property="post" />
@@ -21,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, name, gender, telephone, post, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
+        id, user_id, first_name, last_name, gender, telephone, post, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
     </sql>
 
 </mapper>

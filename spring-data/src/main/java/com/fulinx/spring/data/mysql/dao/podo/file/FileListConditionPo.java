@@ -5,18 +5,14 @@
 package com.fulinx.spring.data.mysql.dao.podo.file;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * <p>
- * 用户账户-查询条件实体
- * </p>
- */
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class FileListConditionPo implements Serializable {
@@ -24,13 +20,16 @@ public class FileListConditionPo implements Serializable {
     @Serial
     private static final long serialVersionUID = -467672439017601372L;
 
-    @Parameter(name = "ID")
+    @Schema(description = "File Id")
     private Integer id;
 
-    @Parameter(name = "文件名称")
+    @Schema(description = "Original File Name")
+    private String originalFileName;
+
+    @Schema(description = "File Name")
     private String fileName;
 
-    @Parameter(name = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
     @TableLogic
     private Integer isDelete;
 

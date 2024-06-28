@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Getter
 @Setter
@@ -27,7 +27,7 @@ public class TbSystemUserEntity extends Model<TbSystemUserEntity> {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "ID")
+    @Schema(description = "System User Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 

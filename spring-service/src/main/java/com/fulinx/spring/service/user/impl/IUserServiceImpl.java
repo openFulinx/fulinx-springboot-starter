@@ -7,19 +7,14 @@ package com.fulinx.spring.service.user.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fulinx.spring.core.spring.config.jackson.JacksonConfig;
 import com.fulinx.spring.core.spring.exception.BusinessException;
 import com.fulinx.spring.core.spring.security.jwt.factory.JwtFactory;
 import com.fulinx.spring.core.utils.DateTimeUtils;
-import com.fulinx.spring.data.mysql.dao.mapper.IUserDao;
 import com.fulinx.spring.data.mysql.entity.TbUserEntity;
-import com.fulinx.spring.data.mysql.service.TbFileEntityService;
 import com.fulinx.spring.data.mysql.service.TbUserEntityService;
-import com.fulinx.spring.data.mysql.service.TbUserProfileEntityService;
 import com.fulinx.spring.service.enums.ErrorMessageEnum;
 import com.fulinx.spring.service.system.user.dto.SystemUserQueryConditionDto;
 import com.fulinx.spring.service.system.user.dto.SystemUserQueryResultDto;
-import com.fulinx.spring.service.user.IUserProfileService;
 import com.fulinx.spring.service.user.IUserService;
 import com.fulinx.spring.service.user.dto.UserAuthenticationTokenDto;
 import com.fulinx.spring.service.user.dto.UserPublicQueryResultDto;
@@ -38,8 +33,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.SecretKey;
 import java.io.Serializable;
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -49,32 +44,16 @@ import java.util.Optional;
 public class IUserServiceImpl implements IUserService {
 
     private final TbUserEntityService tbUsersEntityService;
-    private final TbUserProfileEntityService tbUserProfilesEntityService;
-    private final IUserProfileService iUserProfileService;
-    private final TbFileEntityService tbFileEntityService;
-    private final IUserDao iUserDao;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JacksonConfig jacksonConfig;
     private final JwtFactory jwtFactory;
 
     @Autowired
-    public IUserServiceImpl(TbUserEntityService tbUsersEntityService, TbUserProfileEntityService tbUserProfilesEntityService, IUserProfileService iUserProfileService, TbFileEntityService tbFileEntityService, IUserDao iUserDao, BCryptPasswordEncoder bCryptPasswordEncoder, JacksonConfig jacksonConfig, JwtFactory jwtFactory) {
+    public IUserServiceImpl(TbUserEntityService tbUsersEntityService, BCryptPasswordEncoder bCryptPasswordEncoder, JwtFactory jwtFactory) {
         this.tbUsersEntityService = tbUsersEntityService;
-        this.tbUserProfilesEntityService = tbUserProfilesEntityService;
-        this.iUserProfileService = iUserProfileService;
-        this.tbFileEntityService = tbFileEntityService;
-        this.iUserDao = iUserDao;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.jacksonConfig = jacksonConfig;
         this.jwtFactory = jwtFactory;
     }
 
-
-    @Override
-    public Boolean approvalAvatar(Integer userId, Integer approvalType) throws BusinessException {
-
-        return true;
-    }
 
     @Override
     public Optional<TbUserEntity> lockById(Serializable id) {
@@ -84,7 +63,7 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public Optional<TbUserEntity> getById(Integer id) throws BusinessException {
         this.lockById(id).orElseThrow(() -> {
-            log.warn("查看用户失败，用户不存在，id = {}", id);
+            log.warn("View User Failed，User does not exist，id = {}", id);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         Optional<TbUserEntity> tbUsersEntity = Optional.ofNullable(tbUsersEntityService.getById(id));
@@ -131,10 +110,10 @@ public class IUserServiceImpl implements IUserService {
      */
     @Override
     public UserAuthenticationTokenDto refreshToken(String refreshToken) throws BusinessException {
-        Key signingKey = jwtFactory.createSigningKey();
-        JwtParser jwtParser = Jwts.parser().setSigningKey(signingKey).build();
+        SecretKey signingKey = jwtFactory.createSigningKey();
+        JwtParser jwtParser = Jwts.parser().verifyWith(signingKey).build();
         Jws<Claims> claimsJws = jwtParser.parseClaimsJws(refreshToken);
-        Claims claims = claimsJws.getBody();
+        Claims claims = claimsJws.getPayload();
         if (!jwtFactory.isRefreshToken(claims)) {
             log.error("The token is not refresh token, refreshToken={}", refreshToken);
             throw new BusinessException(ErrorMessageEnum.SYSTEM_ERROR.getMessage(), ErrorMessageEnum.SYSTEM_ERROR.getIndex());
@@ -162,12 +141,12 @@ public class IUserServiceImpl implements IUserService {
     public void updatePassword(Integer currentUserType, Integer id, String newPassword) throws BusinessException {
         // 检查userType，当userType不为9999时，不允许更新超级管理员帐户
         if (currentUserType != 9999) {
-            log.warn("更新用户失败,{},currentUserType={}", ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), currentUserType);
+            log.warn("Update User Failed,{},currentUserType={}", ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), currentUserType);
             throw new BusinessException(ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getMessage(), ErrorMessageEnum.NOT_ALLOW_UPDATE_SUPERADMIN.getIndex());
         }
         // 查找用户是否存在
         TbUserEntity tbUsersEntity = this.lockById(id).orElseThrow(() -> {
-            log.error("修改密码失败，失败原因：{},id = {},  newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, newPassword);
+            log.error("Update Password Failed，Failed Reason：{},id = {},  newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, newPassword);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         String salt = String.valueOf(System.currentTimeMillis());
@@ -182,7 +161,7 @@ public class IUserServiceImpl implements IUserService {
     public void updatePassword(Integer id, String newPassword) throws BusinessException {
         // 查找用户是否存在
         TbUserEntity tbUsersEntity = this.lockById(id).orElseThrow(() -> {
-            log.error("修改密码失败，失败原因：{},id = {},  newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, newPassword);
+            log.error("Update Password Failed，Failed Reason：{},id = {},  newPassword", ErrorMessageEnum.USER_NOT_EXIST.getMessage(), id, newPassword);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         String salt = String.valueOf(System.currentTimeMillis());
@@ -232,7 +211,7 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public Optional<SystemUserQueryResultDto> getUserById(Integer id) throws BusinessException {
         this.lockById(id).orElseThrow(() -> {
-            log.warn("查看用户失败，用户不存在，id = {}", id);
+            log.warn("View user failed，User does not exist，id = {}", id);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         SystemUserQueryConditionDto systemUserQueryConditionDto = new SystemUserQueryConditionDto();
@@ -291,7 +270,7 @@ public class IUserServiceImpl implements IUserService {
     @Transactional(rollbackFor = {Exception.class})
     public Boolean updateStatus(Integer userId, Integer status) throws BusinessException {
         TbUserEntity tbUserEntity = this.lockById(userId).orElseThrow(() -> {
-            log.warn("更新用户状态失败，失败原因，用户不存在不存在，id = {}", userId);
+            log.warn("Update User status failed，Failed Reason，user does not exist，id = {}", userId);
             return new BusinessException(ErrorMessageEnum.USER_NOT_EXIST.getMessage(), ErrorMessageEnum.USER_NOT_EXIST.getIndex());
         });
         tbUserEntity.setStatus(status);

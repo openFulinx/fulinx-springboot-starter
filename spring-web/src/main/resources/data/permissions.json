@@ -1,0 +1,102 @@
+[
+  {
+    "id": null,
+    "permissionParentId": 0,
+    "permissionCode": "sys:role",
+    "permissionType": 1,
+    "children": [
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:role:pagination",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:role:list",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:role:add",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:role:remove",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:role:update",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:role:show",
+        "permissionType": 2,
+      }
+    ]
+  },
+  {
+    "id": null,
+    "permissionParentId": 0,
+    "permissionCode": "sys:user",
+    "permissionType": 1,
+    "children": [
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:pagination",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:list",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:add",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:remove",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:update",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:show",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:updatePassword",
+        "permissionType": 2,
+      },
+      {
+        "id": null,
+        "permissionParentId": null,
+        "permissionCode": "sys:user:resetPassword",
+        "permissionType": 2,
+      }
+    ]
+  }
+]

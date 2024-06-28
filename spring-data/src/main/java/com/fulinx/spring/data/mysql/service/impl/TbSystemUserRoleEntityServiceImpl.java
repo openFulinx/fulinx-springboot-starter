@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 用户角色关联关系表 服务实现类
+ * System User And Role Relationship Table 服务实现类
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Service
 public class TbSystemUserRoleEntityServiceImpl extends ServiceImpl<TbSystemUserRoleMapper, TbSystemUserRoleEntity> implements TbSystemUserRoleEntityService {

@@ -5,7 +5,6 @@
 package com.fulinx.spring.service.user.impl;
 
 import com.fulinx.spring.core.spring.exception.BusinessException;
-import com.fulinx.spring.core.utils.MiscUtils;
 import com.fulinx.spring.data.mysql.entity.TbUserEntity;
 import com.fulinx.spring.data.mysql.entity.TbUserProfileEntity;
 import com.fulinx.spring.data.mysql.enums.UserStatusEnum;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,54 +36,6 @@ public class IUserProfileServiceImpl implements IUserProfileService {
         this.tbUserEntityService = tbUserEntityService;
     }
 
-    @Override
-    @Transactional(rollbackFor = {Exception.class})
-    public Boolean updateUserNickname(Integer userId, String nickname) throws BusinessException {
-        // 检查user状态是否是禁用的状态
-        TbUserEntity tbUserEntity = tbUserEntityService.getById(userId);
-        if (tbUserEntity.getStatus() == UserStatusEnum._禁用.getIndex()) {
-            log.debug("更新昵称失败，失败原因，用户被禁用，userId={}", userId);
-            throw new BusinessException(ErrorMessageEnum.USER_DISABLED.getMessage(), ErrorMessageEnum.USER_DISABLED.getIndex());
-        }
-        // 检查userProfile表是否有记录
-        List<TbUserProfileEntity> tbUserProfileEntityList = tbUserProfileEntityService.lambdaQuery().eq(TbUserProfileEntity::getUserId, userId).list();
-        Boolean isOk;
-        if (tbUserProfileEntityList.size() == 0) {
-            TbUserProfileEntity tbUserProfileEntity = new TbUserProfileEntity();
-            isOk = tbUserProfileEntityService.save(tbUserProfileEntity);
-        } else {
-            TbUserProfileEntity tbUserProfileEntity = tbUserProfileEntityList.get(0);
-            tbUserProfileEntity.setName(nickname);
-            isOk = tbUserProfileEntityService.updateById(tbUserProfileEntity);
-        }
-        return isOk;
-    }
-
-    @Override
-    @Transactional(rollbackFor = {Exception.class})
-    public Boolean updateAvatar(Integer userId, Integer newAvatarFileId) throws BusinessException {
-        // 检查user状态是否是禁用的状态
-        TbUserEntity tbUserEntity = tbUserEntityService.getById(userId);
-        if (tbUserEntity.getStatus() == UserStatusEnum._禁用.getIndex()) {
-            log.debug("更新头像失败，失败原因，用户被禁用，userId={}", userId);
-            throw new BusinessException(ErrorMessageEnum.USER_DISABLED.getMessage(), ErrorMessageEnum.USER_DISABLED.getIndex());
-        }
-        // 检查userProfile表是否有记录
-        List<TbUserProfileEntity> tbUserProfileEntityList = tbUserProfileEntityService.lambdaQuery().eq(TbUserProfileEntity::getUserId, userId).list();
-        Boolean isOk;
-        LocalDateTime localDateTime = LocalDateTime.now();
-        if (tbUserProfileEntityList.size() == 0) {
-            TbUserProfileEntity tbUserProfileEntity = new TbUserProfileEntity();
-
-            isOk = tbUserProfileEntityService.save(tbUserProfileEntity);
-        } else {
-            TbUserProfileEntity tbUserProfileEntity = tbUserProfileEntityList.get(0);
-            TbUserProfileEntity tbUserProfileEntityOrigin = MiscUtils.copyProperties(tbUserProfileEntity, TbUserProfileEntity.class);
-
-            isOk = tbUserProfileEntityService.updateById(tbUserProfileEntity);
-        }
-        return isOk;
-    }
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -93,7 +43,7 @@ public class IUserProfileServiceImpl implements IUserProfileService {
         // 检查user状态是否是禁用的状态
         TbUserEntity tbUserEntity = tbUserEntityService.getById(userId);
         if (tbUserEntity.getStatus() == UserStatusEnum._禁用.getIndex()) {
-            log.debug("更新用户资料失败，失败原因，用户被禁用，userId={}", userId);
+            log.warn("Update user failed，Failed Reason: this user has been disabled, userId={}", userId);
             throw new BusinessException(ErrorMessageEnum.USER_DISABLED.getMessage(), ErrorMessageEnum.USER_DISABLED.getIndex());
         }
         // 检查userProfile表是否有记录
@@ -109,7 +59,6 @@ public class IUserProfileServiceImpl implements IUserProfileService {
             TbUserProfileEntity tbUserProfileEntity = tbUserProfileEntityList.get(0);
             tbUserProfileEntity.setGender(gender);
             tbUserProfileEntity.setPost(post);
-            log.debug("tbUserProfile：{}", tbUserProfileEntity);
             isOk = tbUserProfileEntityService.updateById(tbUserProfileEntity);
         }
         return isOk;

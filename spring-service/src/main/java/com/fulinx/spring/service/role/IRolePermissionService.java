@@ -10,12 +10,5 @@ import java.util.Optional;
 
 public interface IRolePermissionService {
 
-    /**
-     * 创建角色-权限关联关系
-     *
-     * @param roleId
-     * @param permissionId
-     * @return
-     */
     Optional<TbRolePermissionEntity> create(Integer roleId, Integer permissionId);
 }

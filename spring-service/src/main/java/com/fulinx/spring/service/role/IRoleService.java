@@ -16,12 +16,6 @@ import java.util.Optional;
 
 public interface IRoleService {
 
-    /**
-     * 创建角色
-     *
-     * @param roleName
-     * @return
-     */
     Optional<TbRoleEntity> create(String roleName);
 
     boolean isUniqueRoleName(String roleName) throws BusinessException;

@@ -4,33 +4,22 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.systemUser;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fulinx.spring.data.mysql.entity.TbPermissionEntity;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * <p>
- * 用户角色权限表
- * </p>
- *
- * @author minong
- * @since 2023-04-03
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("tb_permissions")
-@Schema(description = "用户角色权限表")
-public class SystemUserPermissionResultDo extends Model<TbPermissionEntity> {
+public class SystemUserRolePermissionResultDo extends Model<TbPermissionEntity> {
 
     @Serial
     private static final long serialVersionUID = 2230454466162552723L;
@@ -38,43 +27,45 @@ public class SystemUserPermissionResultDo extends Model<TbPermissionEntity> {
     @Parameter(name = "ID")
     private Integer id;
 
-    @Parameter(name = "权限名称")
+    @Schema(description = "Permission Name")
     private String permissionName;
 
-    @Parameter(name = "权限父级ID")
+    @Schema(description = "Permission Parent Id")
     private Integer permissionParentId;
 
-    @Parameter(name = "权限唯一标识符")
+    @Schema(description = "Permission Unique Identifier")
     private String permissionCode;
 
-    @Parameter(name = "权限类型：1. 节点 2. 分支")
+    @Schema(description = "Permission Type: 1. Node 2. Branch")
     private Integer permissionType;
 
-    @Parameter(name = "权限描述")
+    @Schema(name = "Permission Description")
     private String permissionDescription;
 
-    @Parameter(name = "子权限")
-    private List<SystemUserPermissionResultDo> children;
+    @Schema(name = "Children")
+    private List<SystemUserRolePermissionResultDo> children;
 
-    @Parameter(name = "软删除标识")
+    @Schema(description = "Soft Delete Flag")
+    @TableLogic
     private Integer isDelete;
 
-    @Parameter(name = "备注")
+    @Schema(description = "Remark")
     private String remark;
 
-    @Parameter(name = "记录版本")
+    @Schema(description = "Record Version")
+    @Version
     private Integer recordVersion;
 
-    @Parameter(name = "创建者")
+    @Schema(description = "Record Create Name")
     private String recordCreateName;
 
-    @Parameter(name = "更新者")
+    @Schema(description = "Record Update Name")
     private String recordUpdateName;
 
-    @Parameter(name = "创建时间")
+    @Schema(description = "Record Create Time")
     private LocalDateTime recordCreateTime;
 
-    @Parameter(name = "更新时间")
+    @Schema(description = "Record Update Time")
     private LocalDateTime recordUpdateTime;
 
 }

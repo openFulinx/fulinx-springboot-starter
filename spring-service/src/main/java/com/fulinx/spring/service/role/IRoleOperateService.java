@@ -14,46 +14,19 @@ import java.util.Optional;
 
 public interface IRoleOperateService {
 
-    /**
-     * 创建角色
-     * @param roleName
-     * @param permissionIds
-     * @return
-     * @throws BusinessException
-     */
+
     Integer create(String roleName, List<Integer> permissionIds) throws BusinessException;
 
-    /**
-     * 删除角色
-     * @param ids
-     * @return
-     * @throws BusinessException
-     */
+
     boolean remove(List<Integer> ids) throws BusinessException;
 
-    /**
-     * 修改角色
-     * @param id
-     * @param roleName
-     * @param permissionIds
-     * @param deletedPermissionIds
-     * @return
-     * @throws BusinessException
-     */
+
     boolean update(Integer id, String roleName, List<Integer> permissionIds, List<Integer> deletedPermissionIds) throws BusinessException;
 
-    /**
-     * 锁表查询单条记录
-     * @param id
-     * @return
-     */
+
     Optional<TbRoleEntity> lockById(Serializable id);
 
-    /**
-     * 获取单条记录
-     * @param id
-     * @return
-     */
+
     Optional<RoleOneResultDto> getById(Integer id) throws BusinessException;
 
 }

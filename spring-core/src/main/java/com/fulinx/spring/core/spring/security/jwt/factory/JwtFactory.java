@@ -10,8 +10,8 @@ import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -97,7 +97,7 @@ public class JwtFactory {
      *
      * @return
      */
-    public Key createSigningKey() {
+    public SecretKey createSigningKey() {
         return new SecretKeySpec(jwtProperties.getSigningKey().getBytes(), signatureAlgorithm.getJcaName());
     }
 

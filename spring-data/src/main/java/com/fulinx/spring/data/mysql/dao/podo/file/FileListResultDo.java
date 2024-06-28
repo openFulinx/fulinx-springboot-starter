@@ -4,11 +4,9 @@
 
 package com.fulinx.spring.data.mysql.dao.podo.file;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,53 +21,50 @@ public class FileListResultDo implements Serializable {
     @Serial
     private static final long serialVersionUID = -7026957750457725266L;
 
-    @Parameter(name = "ID")
+    @Schema(description = "File Id")
     private Integer id;
 
-    @Parameter(name = "原始文件名称")
+    @Schema(description = "Original File Name")
     private String originalFileName;
 
-    @Parameter(name = "文件名称")
+    @Schema(description = "File Name")
     private String fileName;
 
-    @Parameter(name = "文件类型")
+    @Schema(description = "File Content Type")
     private String fileContentType;
 
-    @Parameter(name = "文件扩展名")
+    @Schema(description = "File Extension Name")
     private String fileExtensionName;
 
-    @Parameter(name = "文件路径")
+    @Schema(description = "Path")
     private String path;
 
-    @Parameter(name = "URL地址")
+    @Schema(description = "File Url")
     private String fileUrl;
 
-    @Parameter(name = "Soft Delete Flag")
-    @TableField("is_delete")
+    @Schema(description = "sha256")
+    private String sha256;
+
+    @Schema(description = "Soft Delete Flag")
     @TableLogic
     private Integer isDelete;
 
-    @Parameter(name = "Remark")
+    @Schema(description = "Remark")
     private String remark;
 
-    @Parameter(name = "Record Version")
-    @TableField("record_version")
+    @Schema(description = "Record Version")
     @Version
     private Integer recordVersion;
 
-    @Parameter(name = "Record Create Name")
-    @TableField(value = "record_create_name", fill = FieldFill.INSERT)
+    @Schema(description = "Record Create Name")
     private String recordCreateName;
 
-    @Parameter(name = "Record Update Name")
-    @TableField(value = "record_update_name", fill = FieldFill.INSERT_UPDATE)
+    @Schema(description = "Record Update Name")
     private String recordUpdateName;
 
-    @Parameter(name = "Record Create Time")
-    @TableField(value = "record_create_time", fill = FieldFill.INSERT)
+    @Schema(description = "Record Create Time")
     private LocalDateTime recordCreateTime;
 
-    @Parameter(name = "Record Update Time")
-    @TableField(value = "record_update_time", fill = FieldFill.INSERT_UPDATE)
+    @Schema(description = "Record Update Time")
     private LocalDateTime recordUpdateTime;
 }

@@ -52,7 +52,7 @@ public class ICaptchaServiceImpl implements ICaptchaService {
     @Override
     public boolean matchCaptchaValue(String captchaValue, String captchaKey, CaptchaBusinessTypeEnum captchaBusinessTypeEnum) {
         String captchaValueFromCache = iCaptchaService.getCaptchaValue(captchaKey, captchaBusinessTypeEnum);
-        log.debug("缓存中取到的图形验证码是，captchaKey={}, captchaBusinessType={}, captchaValue={}", captchaKey, captchaBusinessTypeEnum.getName(), captchaValueFromCache);
+        log.debug("The graphic verification code retrieved from the cache is，captchaKey={}, captchaBusinessType={}, captchaValue={}", captchaKey, captchaBusinessTypeEnum.getMessageKey(), captchaValueFromCache);
         return StringUtils.equals(captchaValue, captchaValueFromCache);
     }
 
@@ -65,7 +65,7 @@ public class ICaptchaServiceImpl implements ICaptchaService {
     @Override
     @CachePut(key = "#captchaBusinessTypeEnum + ':' + #captchaKey")
     public String cacheCaptchaValue(String captchaKey, CaptchaBusinessTypeEnum captchaBusinessTypeEnum, String captchaValue) {
-        log.debug("保存到缓存的图形验证码是，captchaKey={}, captchaBusinessType={}, captchaValue={}", captchaKey, captchaBusinessTypeEnum.getName(), captchaValue);
+        log.debug("The graphic verification code saved to the cache is，captchaKey={}, captchaBusinessType={}, captchaValue={}", captchaKey, captchaBusinessTypeEnum.getMessageKey(), captchaValue);
         return captchaValue;
     }
 
@@ -109,7 +109,6 @@ public class ICaptchaServiceImpl implements ICaptchaService {
         CaptchaResultDto captchaResultDto = new CaptchaResultDto();
         captchaResultDto.setImageData(imageData);
         captchaResultDto.setCaptchaValue(text);
-        log.debug("生成的图形验证码是，captchaKey={}, captchaValue={}", captchaKey, text);
         return captchaResultDto;
     }
 }

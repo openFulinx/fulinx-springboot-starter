@@ -8,7 +8,7 @@
         <result column="email" property="email" />
         <result column="password" property="password" />
         <result column="salt" property="salt" />
-        <result column="is_verify" property="isVerify" />
+        <result column="is_email_verify" property="isEmailVerify" />
         <result column="user_type" property="userType" />
         <result column="status" property="status" />
         <result column="is_delete" property="isDelete" />
@@ -22,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, email, password, salt, is_verify, user_type, status, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
+        id, email, password, salt, is_email_verify, user_type, status, is_delete, remark, record_version, record_create_name, record_update_name, record_create_time, record_update_time
     </sql>
 
 </mapper>

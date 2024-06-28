@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 用户角色权限表 服务实现类
+ * Permission Table 服务实现类
  * </p>
  *
  * @author fulinx
- * @since 2024-06-22
+ * @since 2024-06-28
  */
 @Service
 public class TbPermissionEntityServiceImpl extends ServiceImpl<TbPermissionMapper, TbPermissionEntity> implements TbPermissionEntityService {
