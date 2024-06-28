@@ -9,7 +9,7 @@ import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
 
 import java.util.Optional;
 
-public interface ISystemUserRoleService {
+public interface ISystemUserRoleRelationService {
 
     /**
      * 新增用户-角色关联关系

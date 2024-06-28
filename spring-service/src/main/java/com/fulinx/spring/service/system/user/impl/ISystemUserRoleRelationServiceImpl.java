@@ -7,7 +7,7 @@ package com.fulinx.spring.service.system.user.impl;
 import com.fulinx.spring.core.spring.exception.BusinessException;
 import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
 import com.fulinx.spring.data.mysql.service.TbSystemUserRoleRelationEntityService;
-import com.fulinx.spring.service.system.user.ISystemUserRoleService;
+import com.fulinx.spring.service.system.user.ISystemUserRoleRelationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,13 +18,13 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class ISystemUserRoleServiceImpl implements ISystemUserRoleService {
+public class ISystemUserRoleRelationServiceImpl implements ISystemUserRoleRelationService {
 
     private final TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService;
 
     @Lazy
     @Autowired
-    public ISystemUserRoleServiceImpl(TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService) {
+    public ISystemUserRoleRelationServiceImpl(TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService) {
         this.tbSystemUserRoleRelationEntityService = tbSystemUserRoleRelationEntityService;
     }
 

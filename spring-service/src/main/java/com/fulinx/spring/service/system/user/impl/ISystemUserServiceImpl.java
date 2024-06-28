@@ -27,7 +27,7 @@ import com.fulinx.spring.service.enums.CaptchaBusinessTypeEnum;
 import com.fulinx.spring.service.enums.ErrorMessageEnum;
 import com.fulinx.spring.service.role.IRoleService;
 import com.fulinx.spring.service.system.user.ISystemUserProfileService;
-import com.fulinx.spring.service.system.user.ISystemUserRoleService;
+import com.fulinx.spring.service.system.user.ISystemUserRoleRelationService;
 import com.fulinx.spring.service.system.user.ISystemUserService;
 import com.fulinx.spring.service.system.user.dto.*;
 import com.github.pagehelper.Page;
@@ -54,7 +54,7 @@ import java.util.Set;
 @Service
 public class ISystemUserServiceImpl implements ISystemUserService {
 
-    private final ISystemUserRoleService iSystemUserRoleService;
+    private final ISystemUserRoleRelationService iSystemUserRoleRelationService;
     private final IRoleService iRoleService;
 
     private final ICaptchaService iCaptchaService;
@@ -72,8 +72,8 @@ public class ISystemUserServiceImpl implements ISystemUserService {
     private final MessageSourceUtils messageSourceUtils;
 
     @Autowired
-    public ISystemUserServiceImpl(ISystemUserRoleService iSystemUserRoleService, IRoleService iRoleService, ICaptchaService iCaptchaService, ISystemUserProfileService iSystemUserProfileService, TbSystemUserEntityService tbSystemUserEntityService, TbRoleEntityService tbRolesEntityService, TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService, TbSystemUserProfileEntityService tbSystemUserProfileEntityService, ISystemUserDao iSystemUserDao, BCryptPasswordEncoder bCryptPasswordEncoder, TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService, TbPermissionEntityService tbPermissionEntityService, JacksonConfig jacksonConfig, JwtFactory jwtFactory, MessageSourceUtils messageSourceUtils) {
-        this.iSystemUserRoleService = iSystemUserRoleService;
+    public ISystemUserServiceImpl(ISystemUserRoleRelationService iSystemUserRoleRelationService, IRoleService iRoleService, ICaptchaService iCaptchaService, ISystemUserProfileService iSystemUserProfileService, TbSystemUserEntityService tbSystemUserEntityService, TbRoleEntityService tbRolesEntityService, TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService, TbSystemUserProfileEntityService tbSystemUserProfileEntityService, ISystemUserDao iSystemUserDao, BCryptPasswordEncoder bCryptPasswordEncoder, TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService, TbPermissionEntityService tbPermissionEntityService, JacksonConfig jacksonConfig, JwtFactory jwtFactory, MessageSourceUtils messageSourceUtils) {
+        this.iSystemUserRoleRelationService = iSystemUserRoleRelationService;
         this.iRoleService = iRoleService;
         this.iCaptchaService = iCaptchaService;
         this.iSystemUserProfileService = iSystemUserProfileService;
@@ -146,7 +146,7 @@ public class ISystemUserServiceImpl implements ISystemUserService {
                 throw new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
             }
             // 新建用户与角色关联关系
-            iSystemUserRoleService.create(tbSystemUserEntity.getId(), roleId).orElseThrow(() -> {
+            iSystemUserRoleRelationService.create(tbSystemUserEntity.getId(), roleId).orElseThrow(() -> {
                 log.error("用户角色添加失败，{}, username={}, roleId={}", ErrorMessageEnum.USER_ROLE_ADD_FAIL.getMessage(), username, roleId);
                 return new BusinessException(ErrorMessageEnum.USER_ROLE_ADD_FAIL.getMessage(), ErrorMessageEnum.USER_ADD_FAIL.getIndex());
             });
