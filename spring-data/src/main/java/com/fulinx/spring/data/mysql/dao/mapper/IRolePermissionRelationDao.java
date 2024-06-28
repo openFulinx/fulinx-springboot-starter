@@ -7,7 +7,7 @@ package com.fulinx.spring.data.mysql.dao.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface IRolePermissionDao {
+public interface IRolePermissionRelationDao {
 
     boolean truncateTable();
 }

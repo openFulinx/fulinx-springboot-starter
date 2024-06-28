@@ -1,18 +1,23 @@
 package com.fulinx.spring.data.mysql.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
  * <p>
- * Role Permission Table
+ * System User And Role Relationship Table
  * </p>
  *
  * @author fulinx
@@ -21,23 +26,23 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("tb_role_permission")
-@Schema(name = "TbRolePermissionEntity", description = "Role Permission Table")
-public class TbRolePermissionEntity extends Model<TbRolePermissionEntity> {
+@TableName("tb_system_user_role_relation")
+@Schema(name = "TbSystemUserRoleRelationEntity", description = "System User And Role Relationship Table")
+public class TbSystemUserRoleRelationEntity extends Model<TbSystemUserRoleRelationEntity> {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "Role Permission Id")
+    @Schema(description = "System User Role Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(description = "Role Id")
+    @Schema(description = "System User Id")
+    private Integer systemUserId;
+
+    @Schema(description = "角色ID")
     private Integer roleId;
 
-    @Schema(description = "Permission Id")
-    private Integer permissionId;
-
-    @Schema(description = "Soft Delete Flag")
+    @Schema(description = "SOft Delete Flag")
     @TableLogic
     private Integer isDelete;
 
@@ -66,9 +71,9 @@ public class TbRolePermissionEntity extends Model<TbRolePermissionEntity> {
 
     public static final String ID = "id";
 
-    public static final String ROLE_ID = "role_id";
+    public static final String SYSTEM_USER_ID = "system_user_id";
 
-    public static final String PERMISSION_ID = "permission_id";
+    public static final String ROLE_ID = "role_id";
 
     public static final String IS_DELETE = "is_delete";
 

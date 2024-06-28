@@ -1,7 +1,7 @@
 package com.fulinx.spring.data.mysql.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.fulinx.spring.data.mysql.entity.TbRoleEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>

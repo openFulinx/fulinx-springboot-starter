@@ -1,7 +1,7 @@
 package com.fulinx.spring.data.mysql.entity.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fulinx.spring.data.mysql.entity.TbRoleEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>

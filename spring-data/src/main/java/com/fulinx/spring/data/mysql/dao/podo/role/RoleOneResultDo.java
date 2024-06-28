@@ -6,7 +6,7 @@ package com.fulinx.spring.data.mysql.dao.podo.role;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
-import com.fulinx.spring.data.mysql.entity.TbRolePermissionEntity;
+import com.fulinx.spring.data.mysql.entity.TbRolePermissionRelationEntity;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class RoleOneResultDo implements Serializable {
     private String roleName;
 
     @Parameter(name = "List of Permission Corresponding to Roles")
-    private List<TbRolePermissionEntity> rolePermissions;
+    private List<TbRolePermissionRelationEntity> rolePermissions;
 
     @Schema(description = "Soft Delete Flag")
     @TableLogic

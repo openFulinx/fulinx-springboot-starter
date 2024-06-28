@@ -1,7 +1,7 @@
 package com.fulinx.spring.data.mysql.service;
 
+import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
  * @author fulinx
  * @since 2024-06-28
  */
-public interface TbSystemUserRoleEntityService extends IService<TbSystemUserRoleEntity> {
+public interface TbSystemUserRoleRelationEntityService extends IService<TbSystemUserRoleRelationEntity> {
 
 }

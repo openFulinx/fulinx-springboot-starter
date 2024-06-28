@@ -52,24 +52,24 @@ public class ServerSideUserModelJsonDeserializer extends JsonDeserializer<Server
         webSystemServerSideUserModel.setOperatorName(userProfilesEntity.getTelephone());
         webSystemServerSideUserModel.setPost(userProfilesEntity.getPost());
         // 取出角色对应的权限
-        LambdaQueryWrapper<TbSystemUserRoleEntity> tbSystemUserRoleEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-        tbSystemUserRoleEntityLambdaQueryWrapper.eq(TbSystemUserRoleEntity::getSystemUserId, systemUserId);
+        LambdaQueryWrapper<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+        tbSystemUserRoleRelationEntityLambdaQueryWrapper.eq(TbSystemUserRoleRelationEntity::getSystemUserId, systemUserId);
         // 取出角色列表
-        TbSystemUserRoleEntity rolesEntity = new TbSystemUserRoleEntity();
-        List<TbSystemUserRoleEntity> tbSystemUserRoleEntityList = rolesEntity.selectList(tbSystemUserRoleEntityLambdaQueryWrapper);
+        TbSystemUserRoleRelationEntity rolesEntity = new TbSystemUserRoleRelationEntity();
+        List<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityList = rolesEntity.selectList(tbSystemUserRoleRelationEntityLambdaQueryWrapper);
         StringBuffer authority = new StringBuffer();
         Set<Integer> rolePermissions = new HashSet<>();
-        if (tbSystemUserRoleEntityList.size() > 0) {
-            TbRolePermissionEntity rolePermissionsEntity = new TbRolePermissionEntity();
-            for (TbSystemUserRoleEntity tbSystemUserRoleEntity : tbSystemUserRoleEntityList) {
+        if (tbSystemUserRoleRelationEntityList.size() > 0) {
+            TbRolePermissionRelationEntity rolePermissionsEntity = new TbRolePermissionRelationEntity();
+            for (TbSystemUserRoleRelationEntity tbSystemUserRoleRelationEntity : tbSystemUserRoleRelationEntityList) {
                 // 取出角色对应的权限ID
-                LambdaQueryWrapper<TbRolePermissionEntity> tbRolePermissionEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-                tbRolePermissionEntityLambdaQueryWrapper.eq(TbRolePermissionEntity::getRoleId, tbSystemUserRoleEntity.getRoleId());
+                LambdaQueryWrapper<TbRolePermissionRelationEntity> tbRolePermissionRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+                tbRolePermissionRelationEntityLambdaQueryWrapper.eq(TbRolePermissionRelationEntity::getRoleId, tbSystemUserRoleRelationEntity.getRoleId());
 
-                List<TbRolePermissionEntity> tbRolePermissionEntityList = rolePermissionsEntity.selectList(tbRolePermissionEntityLambdaQueryWrapper);
-                if (tbRolePermissionEntityList.size() > 0) {
-                    for (TbRolePermissionEntity tbRolePermissionEntity : tbRolePermissionEntityList) {
-                        rolePermissions.add(tbRolePermissionEntity.getPermissionId());
+                List<TbRolePermissionRelationEntity> tbRolePermissionRelationEntityList = rolePermissionsEntity.selectList(tbRolePermissionRelationEntityLambdaQueryWrapper);
+                if (tbRolePermissionRelationEntityList.size() > 0) {
+                    for (TbRolePermissionRelationEntity tbRolePermissionRelationEntity : tbRolePermissionRelationEntityList) {
+                        rolePermissions.add(tbRolePermissionRelationEntity.getPermissionId());
                     }
                 }
             }

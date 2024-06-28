@@ -1,9 +1,9 @@
 package com.fulinx.spring.data.mysql.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fulinx.spring.data.mysql.entity.TbUserEntity;
 import com.fulinx.spring.data.mysql.entity.mapper.TbUserMapper;
 import com.fulinx.spring.data.mysql.service.TbUserEntityService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

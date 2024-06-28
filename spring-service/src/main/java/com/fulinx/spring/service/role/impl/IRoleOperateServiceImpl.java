@@ -13,15 +13,15 @@ import com.fulinx.spring.core.utils.IntegerUtils;
 import com.fulinx.spring.core.utils.MiscUtils;
 import com.fulinx.spring.data.mysql.dao.mapper.IRoleDao;
 import com.fulinx.spring.data.mysql.entity.TbRoleEntity;
-import com.fulinx.spring.data.mysql.entity.TbRolePermissionEntity;
-import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
+import com.fulinx.spring.data.mysql.entity.TbRolePermissionRelationEntity;
+import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
 import com.fulinx.spring.data.mysql.service.TbRoleEntityService;
-import com.fulinx.spring.data.mysql.service.TbRolePermissionEntityService;
-import com.fulinx.spring.data.mysql.service.TbSystemUserRoleEntityService;
+import com.fulinx.spring.data.mysql.service.TbRolePermissionRelationEntityService;
+import com.fulinx.spring.data.mysql.service.TbSystemUserRoleRelationEntityService;
 import com.fulinx.spring.service.enums.ErrorMessageEnum;
 import com.fulinx.spring.service.permission.IPermissionService;
 import com.fulinx.spring.service.role.IRoleOperateService;
-import com.fulinx.spring.service.role.IRolePermissionService;
+import com.fulinx.spring.service.role.IRolePermissionRelationService;
 import com.fulinx.spring.service.role.IRoleService;
 import com.fulinx.spring.service.role.dto.RoleOneResultDto;
 import lombok.extern.slf4j.Slf4j;
@@ -41,22 +41,22 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
     private IRoleDao iRoleDao;
     private IPermissionService iPermissionService;
     private IRoleService iRoleService;
-    private IRolePermissionService iRolePermissionService;
+    private IRolePermissionRelationService iRolePermissionRelationService;
     private TbRoleEntityService tbRolesEntityService;
-    private TbRolePermissionEntityService tbRolePermissionEntityService;
+    private TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService;
 
-    private TbSystemUserRoleEntityService tbSystemUserRoleEntityService;
+    private TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService;
 
     @Lazy
     @Autowired
-    public IRoleOperateServiceImpl(IRoleDao iRoleDao, IPermissionService iPermissionService, IRoleService iRoleService, IRolePermissionService iRolePermissionService, TbRoleEntityService tbRolesEntityService, TbRolePermissionEntityService tbRolePermissionEntityService, TbSystemUserRoleEntityService tbSystemUserRoleEntityService) {
+    public IRoleOperateServiceImpl(IRoleDao iRoleDao, IPermissionService iPermissionService, IRoleService iRoleService, IRolePermissionRelationService iRolePermissionRelationService, TbRoleEntityService tbRolesEntityService, TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService, TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService) {
         this.iRoleDao = iRoleDao;
         this.iPermissionService = iPermissionService;
         this.iRoleService = iRoleService;
-        this.iRolePermissionService = iRolePermissionService;
+        this.iRolePermissionRelationService = iRolePermissionRelationService;
         this.tbRolesEntityService = tbRolesEntityService;
-        this.tbRolePermissionEntityService = tbRolePermissionEntityService;
-        this.tbSystemUserRoleEntityService = tbSystemUserRoleEntityService;
+        this.tbRolePermissionRelationEntityService = tbRolePermissionRelationEntityService;
+        this.tbSystemUserRoleRelationEntityService = tbSystemUserRoleRelationEntityService;
     }
 
     /**
@@ -91,7 +91,7 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
                 log.error("Create Role Failed，failed reason, {}, permissionId = {}", ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), permissionId);
                 throw new BusinessException(ErrorMessageEnum.ROLE_CREATE_FAIL.getMessage(), ErrorMessageEnum.ROLE_CREATE_FAIL.getIndex());
             }
-            iRolePermissionService.create(tbRolesEntity.getId(), permissionId);
+            iRolePermissionRelationService.create(tbRolesEntity.getId(), permissionId);
         }
         return tbRolesEntity.getId();
     }
@@ -112,9 +112,9 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
                 return new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
             });
             // 如果Role被引用，不允许删除
-            LambdaQueryWrapper<TbSystemUserRoleEntity> tbUserRolesEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-            tbUserRolesEntityLambdaQueryWrapper.eq(TbSystemUserRoleEntity::getRoleId, id);
-            List<TbSystemUserRoleEntity> tbUserRolesEntityList = tbSystemUserRoleEntityService.list(tbUserRolesEntityLambdaQueryWrapper);
+            LambdaQueryWrapper<TbSystemUserRoleRelationEntity> tbUserRolesEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+            tbUserRolesEntityLambdaQueryWrapper.eq(TbSystemUserRoleRelationEntity::getRoleId, id);
+            List<TbSystemUserRoleRelationEntity> tbUserRolesEntityList = tbSystemUserRoleRelationEntityService.list(tbUserRolesEntityLambdaQueryWrapper);
             if (tbUserRolesEntityList.size() > 0) {
                 log.error("Delete Role Failed，failed reason: Role Has Been Referenced, id = {}", id);
                 throw new BusinessException(ErrorMessageEnum.ROLE_REFERENCED.getMessage(), ErrorMessageEnum.ROLE_REFERENCED.getIndex());
@@ -122,12 +122,12 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
 
             tbRolesEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
             tbRolesEntityService.removeById(id);
-            List<TbRolePermissionEntity> tbRolePermissionsEntities = listRolePermissionsByRoleId(id);
-            for (TbRolePermissionEntity tbRolePermissionEntity : tbRolePermissionsEntities
+            List<TbRolePermissionRelationEntity> tbRolePermissionsEntities = listRolePermissionsByRoleId(id);
+            for (TbRolePermissionRelationEntity tbRolePermissionRelationEntity : tbRolePermissionsEntities
             ) {
-                Integer tbRolePermissionEntityId = tbRolePermissionEntity.getId();
-                tbRolePermissionEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
-                tbRolePermissionEntityService.removeById(tbRolePermissionEntityId);
+                Integer tbRolePermissionRelationEntityId = tbRolePermissionRelationEntity.getId();
+                tbRolePermissionRelationEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
+                tbRolePermissionRelationEntityService.removeById(tbRolePermissionRelationEntityId);
             }
         }
 
@@ -163,9 +163,9 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
         for (Integer permissionId : permissionIds
         ) {
             // 查看权限ID是否存在，不存在则新增
-            List<TbRolePermissionEntity> tbRolePermissionsEntities = listRolePermissionsByRoleIdAndPermissionId(id, permissionId);
+            List<TbRolePermissionRelationEntity> tbRolePermissionsEntities = listRolePermissionsByRoleIdAndPermissionId(id, permissionId);
             if (CollectionUtils.isEmpty(tbRolePermissionsEntities)) {
-                iRolePermissionService.create(id, permissionId);
+                iRolePermissionRelationService.create(id, permissionId);
             }
         }
 
@@ -173,11 +173,11 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
             // 删除不需要的权限
             for (Integer deletedPermissionId : deletedPermissionIds
             ) {
-                List<TbRolePermissionEntity> tbRolePermissionsEntities = listRolePermissionsByRoleIdAndPermissionId(id, deletedPermissionId);
+                List<TbRolePermissionRelationEntity> tbRolePermissionsEntities = listRolePermissionsByRoleIdAndPermissionId(id, deletedPermissionId);
                 if (!CollectionUtils.isEmpty(tbRolePermissionsEntities)) {
-                    TbRolePermissionEntity tbRolePermissionEntity = tbRolePermissionsEntities.get(0);
-                    tbRolePermissionEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
-                    tbRolePermissionEntityService.removeById(tbRolePermissionEntity.getId());
+                    TbRolePermissionRelationEntity tbRolePermissionRelationEntity = tbRolePermissionsEntities.get(0);
+                    tbRolePermissionRelationEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
+                    tbRolePermissionRelationEntityService.removeById(tbRolePermissionRelationEntity.getId());
                 }
             }
         }
@@ -211,9 +211,9 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
             throw new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
         }
         RoleOneResultDto oneResultDto = MiscUtils.copyProperties(role, RoleOneResultDto.class);
-        LambdaQueryWrapper<TbRolePermissionEntity> tbRolePermissionEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-        tbRolePermissionEntityLambdaQueryWrapper.eq(TbRolePermissionEntity::getRoleId, id);
-        List<TbRolePermissionEntity> tbRolePermissionsEntities = tbRolePermissionEntityService.list(tbRolePermissionEntityLambdaQueryWrapper);
+        LambdaQueryWrapper<TbRolePermissionRelationEntity> tbRolePermissionRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+        tbRolePermissionRelationEntityLambdaQueryWrapper.eq(TbRolePermissionRelationEntity::getRoleId, id);
+        List<TbRolePermissionRelationEntity> tbRolePermissionsEntities = tbRolePermissionRelationEntityService.list(tbRolePermissionRelationEntityLambdaQueryWrapper);
         oneResultDto.setRolePermissions(tbRolePermissionsEntities);
         return Optional.ofNullable(oneResultDto == null ? null : oneResultDto);
     }
@@ -235,10 +235,10 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
      * @param roleId
      * @return
      */
-    private List<TbRolePermissionEntity> listRolePermissionsByRoleId(Integer roleId) {
-        LambdaQueryWrapper<TbRolePermissionEntity> tbRolePermissionEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-        tbRolePermissionEntityLambdaQueryWrapper.eq(TbRolePermissionEntity::getRoleId, roleId);
-        return tbRolePermissionEntityService.list(tbRolePermissionEntityLambdaQueryWrapper);
+    private List<TbRolePermissionRelationEntity> listRolePermissionsByRoleId(Integer roleId) {
+        LambdaQueryWrapper<TbRolePermissionRelationEntity> tbRolePermissionRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+        tbRolePermissionRelationEntityLambdaQueryWrapper.eq(TbRolePermissionRelationEntity::getRoleId, roleId);
+        return tbRolePermissionRelationEntityService.list(tbRolePermissionRelationEntityLambdaQueryWrapper);
     }
 
     /**
@@ -246,11 +246,11 @@ public class IRoleOperateServiceImpl implements IRoleOperateService {
      * @param permissionId
      * @return
      */
-    private List<TbRolePermissionEntity> listRolePermissionsByRoleIdAndPermissionId(Integer roleId, Integer permissionId) {
-        LambdaQueryWrapper<TbRolePermissionEntity> tbRolePermissionEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-        tbRolePermissionEntityLambdaQueryWrapper.eq(TbRolePermissionEntity::getRoleId, roleId);
-        tbRolePermissionEntityLambdaQueryWrapper.eq(TbRolePermissionEntity::getPermissionId, permissionId);
-        return tbRolePermissionEntityService.list(tbRolePermissionEntityLambdaQueryWrapper);
+    private List<TbRolePermissionRelationEntity> listRolePermissionsByRoleIdAndPermissionId(Integer roleId, Integer permissionId) {
+        LambdaQueryWrapper<TbRolePermissionRelationEntity> tbRolePermissionRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+        tbRolePermissionRelationEntityLambdaQueryWrapper.eq(TbRolePermissionRelationEntity::getRoleId, roleId);
+        tbRolePermissionRelationEntityLambdaQueryWrapper.eq(TbRolePermissionRelationEntity::getPermissionId, permissionId);
+        return tbRolePermissionRelationEntityService.list(tbRolePermissionRelationEntityLambdaQueryWrapper);
     }
 
 }

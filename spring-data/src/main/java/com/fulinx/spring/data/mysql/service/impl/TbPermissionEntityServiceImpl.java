@@ -1,9 +1,9 @@
 package com.fulinx.spring.data.mysql.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fulinx.spring.data.mysql.entity.TbPermissionEntity;
 import com.fulinx.spring.data.mysql.entity.mapper.TbPermissionMapper;
 import com.fulinx.spring.data.mysql.service.TbPermissionEntityService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

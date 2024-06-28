@@ -1,7 +1,7 @@
 package com.fulinx.spring.data.mysql.entity.mapper;
 
+import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
  * @author fulinx
  * @since 2024-06-28
  */
-public interface TbSystemUserRoleMapper extends BaseMapper<TbSystemUserRoleEntity> {
+public interface TbSystemUserRoleRelationMapper extends BaseMapper<TbSystemUserRoleRelationEntity> {
 
 }

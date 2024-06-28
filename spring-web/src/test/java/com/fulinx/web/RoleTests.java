@@ -2,10 +2,10 @@ package com.fulinx.web;
 
 import com.fulinx.spring.data.mysql.entity.TbPermissionEntity;
 import com.fulinx.spring.data.mysql.entity.TbRoleEntity;
-import com.fulinx.spring.data.mysql.entity.TbRolePermissionEntity;
+import com.fulinx.spring.data.mysql.entity.TbRolePermissionRelationEntity;
 import com.fulinx.spring.data.mysql.service.TbPermissionEntityService;
 import com.fulinx.spring.data.mysql.service.TbRoleEntityService;
-import com.fulinx.spring.data.mysql.service.TbRolePermissionEntityService;
+import com.fulinx.spring.data.mysql.service.TbRolePermissionRelationEntityService;
 import com.fulinx.spring.web.SpringWebApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -26,13 +26,13 @@ public class RoleTests {
 
     private final TbPermissionEntityService tbPermissionEntityService;
 
-    private final TbRolePermissionEntityService tbRolePermissionEntityService;
+    private final TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService;
 
     @Autowired
-    public RoleTests(TbRoleEntityService tbRoleEntityService, TbPermissionEntityService tbPermissionEntityService, TbRolePermissionEntityService tbRolePermissionEntityService) {
+    public RoleTests(TbRoleEntityService tbRoleEntityService, TbPermissionEntityService tbPermissionEntityService, TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService) {
         this.tbRoleEntityService = tbRoleEntityService;
         this.tbPermissionEntityService = tbPermissionEntityService;
-        this.tbRolePermissionEntityService = tbRolePermissionEntityService;
+        this.tbRolePermissionRelationEntityService = tbRolePermissionRelationEntityService;
     }
 
 
@@ -55,10 +55,10 @@ public class RoleTests {
             TbRoleEntity tbRoleEntity = list.get(0);
             List<TbPermissionEntity> tbPermissionEntityList = tbPermissionEntityService.list();
             tbPermissionEntityList.forEach(tbPermissionEntity -> {
-                TbRolePermissionEntity tbRolePermissionEntity = new TbRolePermissionEntity();
-                tbRolePermissionEntity.setRoleId(tbRoleEntity.getId());
-                tbRolePermissionEntity.setPermissionId(tbPermissionEntity.getId());
-                tbRolePermissionEntityService.save(tbRolePermissionEntity);
+                TbRolePermissionRelationEntity tbRolePermissionRelationEntity = new TbRolePermissionRelationEntity();
+                tbRolePermissionRelationEntity.setRoleId(tbRoleEntity.getId());
+                tbRolePermissionRelationEntity.setPermissionId(tbPermissionEntity.getId());
+                tbRolePermissionRelationEntityService.save(tbRolePermissionRelationEntity);
             });
         }
     }

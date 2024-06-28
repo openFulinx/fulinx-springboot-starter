@@ -5,8 +5,8 @@
 package com.fulinx.spring.service.system.user.impl;
 
 import com.fulinx.spring.core.spring.exception.BusinessException;
-import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
-import com.fulinx.spring.data.mysql.service.TbSystemUserRoleEntityService;
+import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
+import com.fulinx.spring.data.mysql.service.TbSystemUserRoleRelationEntityService;
 import com.fulinx.spring.service.system.user.ISystemUserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ import java.util.Optional;
 @Slf4j
 public class ISystemUserRoleServiceImpl implements ISystemUserRoleService {
 
-    private final TbSystemUserRoleEntityService tbSystemUserRoleEntityService;
+    private final TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService;
 
     @Lazy
     @Autowired
-    public ISystemUserRoleServiceImpl(TbSystemUserRoleEntityService tbSystemUserRoleEntityService) {
-        this.tbSystemUserRoleEntityService = tbSystemUserRoleEntityService;
+    public ISystemUserRoleServiceImpl(TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService) {
+        this.tbSystemUserRoleRelationEntityService = tbSystemUserRoleRelationEntityService;
     }
 
     /**
@@ -38,12 +38,12 @@ public class ISystemUserRoleServiceImpl implements ISystemUserRoleService {
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public Optional<TbSystemUserRoleEntity> create(Integer systemUserId, Integer roleId) throws BusinessException {
-        TbSystemUserRoleEntity tbSystemUserRoleEntity = new TbSystemUserRoleEntity();
-        tbSystemUserRoleEntity.setSystemUserId(systemUserId);
-        tbSystemUserRoleEntity.setRoleId(roleId);
-        boolean isOk = tbSystemUserRoleEntityService.save(tbSystemUserRoleEntity);
-        return Optional.ofNullable(isOk ? tbSystemUserRoleEntity : null);
+    public Optional<TbSystemUserRoleRelationEntity> create(Integer systemUserId, Integer roleId) throws BusinessException {
+        TbSystemUserRoleRelationEntity tbSystemUserRoleRelationEntity = new TbSystemUserRoleRelationEntity();
+        tbSystemUserRoleRelationEntity.setSystemUserId(systemUserId);
+        tbSystemUserRoleRelationEntity.setRoleId(roleId);
+        boolean isOk = tbSystemUserRoleRelationEntityService.save(tbSystemUserRoleRelationEntity);
+        return Optional.ofNullable(isOk ? tbSystemUserRoleRelationEntity : null);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ISystemUserRoleServiceImpl implements ISystemUserRoleService {
      */
     @Override
     public boolean remove(Integer id) throws BusinessException {
-        tbSystemUserRoleEntityService.removeById(id);
+        tbSystemUserRoleRelationEntityService.removeById(id);
         return true;
     }
 }

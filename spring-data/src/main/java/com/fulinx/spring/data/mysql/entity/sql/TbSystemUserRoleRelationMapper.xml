@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fulinx.spring.data.mysql.entity.mapper.TbSystemUserRoleMapper">
+<mapper namespace="com.fulinx.spring.data.mysql.entity.mapper.TbSystemUserRoleRelationMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity">
+    <resultMap id="BaseResultMap" type="com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity">
         <id column="id" property="id" />
         <result column="system_user_id" property="systemUserId" />
         <result column="role_id" property="roleId" />

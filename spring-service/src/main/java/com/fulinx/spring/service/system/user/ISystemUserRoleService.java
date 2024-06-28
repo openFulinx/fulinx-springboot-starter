@@ -5,7 +5,7 @@
 package com.fulinx.spring.service.system.user;
 
 import com.fulinx.spring.core.spring.exception.BusinessException;
-import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
+import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
 
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ public interface ISystemUserRoleService {
      * @return
      * @throws BusinessException
      */
-    Optional<TbSystemUserRoleEntity> create(Integer systemUserId, Integer roleId) throws BusinessException;
+    Optional<TbSystemUserRoleRelationEntity> create(Integer systemUserId, Integer roleId) throws BusinessException;
 
     /**
      * 删除用户-角色关联关系

@@ -2,10 +2,10 @@ package com.fulinx.web;
 
 import com.fulinx.spring.data.mysql.entity.TbSystemUserEntity;
 import com.fulinx.spring.data.mysql.entity.TbSystemUserProfileEntity;
-import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleEntity;
+import com.fulinx.spring.data.mysql.entity.TbSystemUserRoleRelationEntity;
 import com.fulinx.spring.data.mysql.service.TbSystemUserEntityService;
 import com.fulinx.spring.data.mysql.service.TbSystemUserProfileEntityService;
-import com.fulinx.spring.data.mysql.service.TbSystemUserRoleEntityService;
+import com.fulinx.spring.data.mysql.service.TbSystemUserRoleRelationEntityService;
 import com.fulinx.spring.web.SpringWebApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,13 +28,13 @@ public class SystemUserTests {
 
     private final TbSystemUserProfileEntityService tbSystemUserProfileEntityService;
 
-    private final TbSystemUserRoleEntityService tbSystemUserRoleEntityService;
+    private final TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService;
 
     @Autowired
-    public SystemUserTests(TbSystemUserEntityService tbSystemUserEntityService, TbSystemUserProfileEntityService tbSystemUserProfileEntityService, TbSystemUserRoleEntityService tbSystemUserRoleEntityService) {
+    public SystemUserTests(TbSystemUserEntityService tbSystemUserEntityService, TbSystemUserProfileEntityService tbSystemUserProfileEntityService, TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService) {
         this.tbSystemUserEntityService = tbSystemUserEntityService;
         this.tbSystemUserProfileEntityService = tbSystemUserProfileEntityService;
-        this.tbSystemUserRoleEntityService = tbSystemUserRoleEntityService;
+        this.tbSystemUserRoleRelationEntityService = tbSystemUserRoleRelationEntityService;
     }
 
     @Test
@@ -60,10 +60,10 @@ public class SystemUserTests {
             tbSystemUserProfileEntity.setLastName("admin");
             tbSystemUserProfileEntityService.save(tbSystemUserProfileEntity);
             // Create User Role
-            TbSystemUserRoleEntity tbSystemUserRoleEntity = new TbSystemUserRoleEntity();
-            tbSystemUserRoleEntity.setSystemUserId(tbSystemUserEntity.getId());
-            tbSystemUserRoleEntity.setRoleId(1);
-            tbSystemUserRoleEntityService.save(tbSystemUserRoleEntity);
+            TbSystemUserRoleRelationEntity tbSystemUserRoleRelationEntity = new TbSystemUserRoleRelationEntity();
+            tbSystemUserRoleRelationEntity.setSystemUserId(tbSystemUserEntity.getId());
+            tbSystemUserRoleRelationEntity.setRoleId(1);
+            tbSystemUserRoleRelationEntityService.save(tbSystemUserRoleRelationEntity);
         }
     }
 }

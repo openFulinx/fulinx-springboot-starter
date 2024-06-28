@@ -61,29 +61,29 @@ public class ISystemUserServiceImpl implements ISystemUserService {
     private final ISystemUserProfileService iSystemUserProfileService;
     private final TbSystemUserEntityService tbSystemUserEntityService;
     private final TbRoleEntityService tbRolesEntityService;
-    private final TbSystemUserRoleEntityService tbSystemUserRoleEntityService;
+    private final TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService;
     private final TbSystemUserProfileEntityService tbSystemUserProfileEntityService;
     private final ISystemUserDao iSystemUserDao;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final TbRolePermissionEntityService tbRolePermissionEntityService;
+    private final TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService;
     private final TbPermissionEntityService tbPermissionEntityService;
     private final JacksonConfig jacksonConfig;
     private final JwtFactory jwtFactory;
     private final MessageSourceUtils messageSourceUtils;
 
     @Autowired
-    public ISystemUserServiceImpl(ISystemUserRoleService iSystemUserRoleService, IRoleService iRoleService, ICaptchaService iCaptchaService, ISystemUserProfileService iSystemUserProfileService, TbSystemUserEntityService tbSystemUserEntityService, TbRoleEntityService tbRolesEntityService, TbSystemUserRoleEntityService tbSystemUserRoleEntityService, TbSystemUserProfileEntityService tbSystemUserProfileEntityService, ISystemUserDao iSystemUserDao, BCryptPasswordEncoder bCryptPasswordEncoder, TbRolePermissionEntityService tbRolePermissionEntityService, TbPermissionEntityService tbPermissionEntityService, JacksonConfig jacksonConfig, JwtFactory jwtFactory, MessageSourceUtils messageSourceUtils) {
+    public ISystemUserServiceImpl(ISystemUserRoleService iSystemUserRoleService, IRoleService iRoleService, ICaptchaService iCaptchaService, ISystemUserProfileService iSystemUserProfileService, TbSystemUserEntityService tbSystemUserEntityService, TbRoleEntityService tbRolesEntityService, TbSystemUserRoleRelationEntityService tbSystemUserRoleRelationEntityService, TbSystemUserProfileEntityService tbSystemUserProfileEntityService, ISystemUserDao iSystemUserDao, BCryptPasswordEncoder bCryptPasswordEncoder, TbRolePermissionRelationEntityService tbRolePermissionRelationEntityService, TbPermissionEntityService tbPermissionEntityService, JacksonConfig jacksonConfig, JwtFactory jwtFactory, MessageSourceUtils messageSourceUtils) {
         this.iSystemUserRoleService = iSystemUserRoleService;
         this.iRoleService = iRoleService;
         this.iCaptchaService = iCaptchaService;
         this.iSystemUserProfileService = iSystemUserProfileService;
         this.tbSystemUserEntityService = tbSystemUserEntityService;
         this.tbRolesEntityService = tbRolesEntityService;
-        this.tbSystemUserRoleEntityService = tbSystemUserRoleEntityService;
+        this.tbSystemUserRoleRelationEntityService = tbSystemUserRoleRelationEntityService;
         this.tbSystemUserProfileEntityService = tbSystemUserProfileEntityService;
         this.iSystemUserDao = iSystemUserDao;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.tbRolePermissionEntityService = tbRolePermissionEntityService;
+        this.tbRolePermissionRelationEntityService = tbRolePermissionRelationEntityService;
         this.tbPermissionEntityService = tbPermissionEntityService;
         this.jacksonConfig = jacksonConfig;
         this.jwtFactory = jwtFactory;
@@ -204,14 +204,14 @@ public class ISystemUserServiceImpl implements ISystemUserService {
             tbSystemUserProfileEntityService.removeById(tbSystemUserProfileEntity.getId());
 
             // 删除用户权限
-            LambdaQueryWrapper<TbSystemUserRoleEntity> tbSystemUserRoleEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-            tbSystemUserRoleEntityLambdaQueryWrapper.eq(TbSystemUserRoleEntity::getSystemUserId, id);
-            List<TbSystemUserRoleEntity> tbSystemUserRoleEntityList = tbSystemUserRoleEntityService.list(tbSystemUserRoleEntityLambdaQueryWrapper);
-            if (tbSystemUserRoleEntityList.size() > 0) {
-                for (TbSystemUserRoleEntity tbSystemUserRoleEntity : tbSystemUserRoleEntityList
+            LambdaQueryWrapper<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+            tbSystemUserRoleRelationEntityLambdaQueryWrapper.eq(TbSystemUserRoleRelationEntity::getSystemUserId, id);
+            List<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityList = tbSystemUserRoleRelationEntityService.list(tbSystemUserRoleRelationEntityLambdaQueryWrapper);
+            if (tbSystemUserRoleRelationEntityList.size() > 0) {
+                for (TbSystemUserRoleRelationEntity tbSystemUserRoleRelationEntity : tbSystemUserRoleRelationEntityList
                 ) {
-                    tbSystemUserRoleEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
-                    tbSystemUserRoleEntityService.removeById(tbSystemUserRoleEntity.getId());
+                    tbSystemUserRoleRelationEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
+                    tbSystemUserRoleRelationEntityService.removeById(tbSystemUserRoleRelationEntity.getId());
                 }
             }
         }
@@ -264,20 +264,20 @@ public class ISystemUserServiceImpl implements ISystemUserService {
         tbSystemUserProfileEntityService.updateById(tbSystemUserProfileEntity);
 
         // 先查询所有的角色，再新增
-        LambdaQueryWrapper<TbSystemUserRoleEntity> tbSystemUserRoleEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-        tbSystemUserRoleEntityLambdaQueryWrapper.eq(TbSystemUserRoleEntity::getSystemUserId, id);
-        List<TbSystemUserRoleEntity> tbSystemUserRoleEntityList = tbSystemUserRoleEntityService.list(tbSystemUserRoleEntityLambdaQueryWrapper);
+        LambdaQueryWrapper<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+        tbSystemUserRoleRelationEntityLambdaQueryWrapper.eq(TbSystemUserRoleRelationEntity::getSystemUserId, id);
+        List<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityList = tbSystemUserRoleRelationEntityService.list(tbSystemUserRoleRelationEntityLambdaQueryWrapper);
         // 存储已存在的角色ID
         Set<Integer> existingRoleIds = new HashSet<>();
-        if (tbSystemUserRoleEntityList.size() > 0) {
-            for (TbSystemUserRoleEntity tbSystemUserRoleEntity : tbSystemUserRoleEntityList
+        if (tbSystemUserRoleRelationEntityList.size() > 0) {
+            for (TbSystemUserRoleRelationEntity tbSystemUserRoleRelationEntity : tbSystemUserRoleRelationEntityList
             ) {
-                existingRoleIds.add(tbSystemUserRoleEntity.getRoleId());
-                // 如果旧的tbSystemUserRoleEntity.getId()在roleIds中找不到，则删除
-                if (!roleIds.contains(tbSystemUserRoleEntity.getRoleId())) {
+                existingRoleIds.add(tbSystemUserRoleRelationEntity.getRoleId());
+                // 如果旧的tbSystemUserRoleRelationEntity.getId()在roleIds中找不到，则删除
+                if (!roleIds.contains(tbSystemUserRoleRelationEntity.getRoleId())) {
                     // 删除用户与角色关联关系
-                    tbSystemUserRoleEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
-                    tbSystemUserRoleEntityService.removeById(tbSystemUserRoleEntity.getId());
+                    tbSystemUserRoleRelationEntity.setIsDelete(RecordRemoveStatusEnum._LOGICALLY_DELETED.getIndex());
+                    tbSystemUserRoleRelationEntityService.removeById(tbSystemUserRoleRelationEntity.getId());
                 }
 
             }
@@ -290,10 +290,10 @@ public class ISystemUserServiceImpl implements ISystemUserService {
                     throw new BusinessException(ErrorMessageEnum.ROLE_NOT_EXISTS.getMessage(), ErrorMessageEnum.ROLE_NOT_EXISTS.getIndex());
                 }
                 // 新建用户与角色关联关系
-                TbSystemUserRoleEntity newUserRole = new TbSystemUserRoleEntity();
+                TbSystemUserRoleRelationEntity newUserRole = new TbSystemUserRoleRelationEntity();
                 newUserRole.setSystemUserId(id);
                 newUserRole.setRoleId(roleId);
-                tbSystemUserRoleEntityService.save(newUserRole);
+                tbSystemUserRoleRelationEntityService.save(newUserRole);
             }
         }
         return true;
@@ -382,23 +382,23 @@ public class ISystemUserServiceImpl implements ISystemUserService {
             throw new BusinessException(ErrorMessageEnum.USER_DISABLED.getMessage(), ErrorMessageEnum.USER_DISABLED.getIndex());
         }
         // 取出角色对应的权限
-        LambdaQueryWrapper<TbSystemUserRoleEntity> tbSystemUserRoleEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-        tbSystemUserRoleEntityLambdaQueryWrapper.eq(TbSystemUserRoleEntity::getSystemUserId, systemUserId);
+        LambdaQueryWrapper<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+        tbSystemUserRoleRelationEntityLambdaQueryWrapper.eq(TbSystemUserRoleRelationEntity::getSystemUserId, systemUserId);
         // 取出角色列表
-        List<TbSystemUserRoleEntity> tbSystemUserRoleEntityList = tbSystemUserRoleEntityService.list(tbSystemUserRoleEntityLambdaQueryWrapper);
+        List<TbSystemUserRoleRelationEntity> tbSystemUserRoleRelationEntityList = tbSystemUserRoleRelationEntityService.list(tbSystemUserRoleRelationEntityLambdaQueryWrapper);
         StringBuffer authority = new StringBuffer();
         Set<Integer> systemUserRoleIds = new HashSet<>();
         Set<Integer> rolePermissions = new HashSet<>();
-        if (tbSystemUserRoleEntityList.size() > 0) {
-            for (TbSystemUserRoleEntity tbSystemUserRoleEntity : tbSystemUserRoleEntityList) {
-                systemUserRoleIds.add(tbSystemUserRoleEntity.getRoleId());
+        if (tbSystemUserRoleRelationEntityList.size() > 0) {
+            for (TbSystemUserRoleRelationEntity tbSystemUserRoleRelationEntity : tbSystemUserRoleRelationEntityList) {
+                systemUserRoleIds.add(tbSystemUserRoleRelationEntity.getRoleId());
                 // 取出角色对应的权限ID
-                LambdaQueryWrapper<TbRolePermissionEntity> tbRolePermissionEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
-                tbRolePermissionEntityLambdaQueryWrapper.eq(TbRolePermissionEntity::getRoleId, tbSystemUserRoleEntity.getRoleId());
-                List<TbRolePermissionEntity> tbRolePermissionEntityList = tbRolePermissionEntityService.list(tbRolePermissionEntityLambdaQueryWrapper);
-                if (tbRolePermissionEntityList.size() > 0) {
-                    for (TbRolePermissionEntity tbRolePermissionEntity : tbRolePermissionEntityList) {
-                        rolePermissions.add(tbRolePermissionEntity.getPermissionId());
+                LambdaQueryWrapper<TbRolePermissionRelationEntity> tbRolePermissionRelationEntityLambdaQueryWrapper = Wrappers.lambdaQuery();
+                tbRolePermissionRelationEntityLambdaQueryWrapper.eq(TbRolePermissionRelationEntity::getRoleId, tbSystemUserRoleRelationEntity.getRoleId());
+                List<TbRolePermissionRelationEntity> tbRolePermissionRelationEntityList = tbRolePermissionRelationEntityService.list(tbRolePermissionRelationEntityLambdaQueryWrapper);
+                if (tbRolePermissionRelationEntityList.size() > 0) {
+                    for (TbRolePermissionRelationEntity tbRolePermissionRelationEntity : tbRolePermissionRelationEntityList) {
+                        rolePermissions.add(tbRolePermissionRelationEntity.getPermissionId());
                     }
                 }
             }
