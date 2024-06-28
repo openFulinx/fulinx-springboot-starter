@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 28/06/2024 12:36:40
+ Date: 28/06/2024 15:56:36
 */
 
 SET NAMES utf8mb4;
@@ -107,10 +107,10 @@ CREATE TABLE `tb_role`  (
 INSERT INTO `tb_role` VALUES (1, 'Administrator', 0, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
--- Table structure for tb_role_permission
+-- Table structure for tb_role_permission_relation
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_role_permission`;
-CREATE TABLE `tb_role_permission`  (
+DROP TABLE IF EXISTS `tb_role_permission_relation`;
+CREATE TABLE `tb_role_permission_relation`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Role Permission Id',
   `role_id` int NOT NULL COMMENT 'Role Id',
   `permission_id` int NOT NULL COMMENT 'Permission Id',
@@ -122,27 +122,27 @@ CREATE TABLE `tb_role_permission`  (
   `record_create_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Create Time',
   `record_update_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Update Time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Role Permission Table' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Role Permission Relation Table' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of tb_role_permission
+-- Records of tb_role_permission_relation
 -- ----------------------------
-INSERT INTO `tb_role_permission` VALUES (1, 1, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (2, 1, 2, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (3, 1, 3, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (4, 1, 4, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (5, 1, 5, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (6, 1, 6, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (7, 1, 7, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (8, 1, 8, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (9, 1, 9, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (10, 1, 10, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (11, 1, 11, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (12, 1, 12, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (13, 1, 13, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (14, 1, 14, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (15, 1, 15, 0, NULL, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `tb_role_permission` VALUES (16, 1, 16, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (1, 1, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (2, 1, 2, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (3, 1, 3, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (4, 1, 4, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (5, 1, 5, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (6, 1, 6, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (7, 1, 7, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (8, 1, 8, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (9, 1, 9, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (10, 1, 10, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (11, 1, 11, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (12, 1, 12, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (13, 1, 13, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (14, 1, 14, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (15, 1, 15, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_role_permission_relation` VALUES (16, 1, 16, 0, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tb_system_user
@@ -199,10 +199,10 @@ CREATE TABLE `tb_system_user_profile`  (
 INSERT INTO `tb_system_user_profile` VALUES (1, 1, 'admin', 'admin', NULL, NULL, NULL, 0, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
--- Table structure for tb_system_user_role
+-- Table structure for tb_system_user_role_relation
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_system_user_role`;
-CREATE TABLE `tb_system_user_role`  (
+DROP TABLE IF EXISTS `tb_system_user_role_relation`;
+CREATE TABLE `tb_system_user_role_relation`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'System User Role Id',
   `system_user_id` int NOT NULL COMMENT 'System User Id',
   `role_id` int NOT NULL COMMENT '角色ID',
@@ -215,12 +215,12 @@ CREATE TABLE `tb_system_user_role`  (
   `record_update_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Update Time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_user_id_role_id`(`system_user_id`, `role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'System User And Role Relationship Table' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'System User And Role Relationship Table' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of tb_system_user_role
+-- Records of tb_system_user_role_relation
 -- ----------------------------
-INSERT INTO `tb_system_user_role` VALUES (1, 1, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_system_user_role_relation` VALUES (1, 1, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tb_user
