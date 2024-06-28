@@ -18,8 +18,6 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("*");
-        config.addAllowedOrigin("http://localhost:17010");
-        config.setAllowCredentials(true);
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
