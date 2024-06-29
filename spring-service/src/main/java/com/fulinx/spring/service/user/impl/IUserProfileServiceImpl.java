@@ -7,7 +7,7 @@ package com.fulinx.spring.service.user.impl;
 import com.fulinx.spring.core.spring.exception.BusinessException;
 import com.fulinx.spring.data.mysql.entity.TbUserEntity;
 import com.fulinx.spring.data.mysql.entity.TbUserProfileEntity;
-import com.fulinx.spring.data.mysql.enums.UserStatusEnum;
+import com.fulinx.spring.data.mysql.enums.SimpleStatusEnum;
 import com.fulinx.spring.data.mysql.service.TbUserEntityService;
 import com.fulinx.spring.data.mysql.service.TbUserProfileEntityService;
 import com.fulinx.spring.service.enums.ErrorMessageEnum;
@@ -42,7 +42,7 @@ public class IUserProfileServiceImpl implements IUserProfileService {
     public Boolean updateUserProfiles(Integer userId, String firstName, String lastName, LocalDate birthday, Integer gender, String company, String post, String personalInformation) throws BusinessException {
         // 检查user状态是否是禁用的状态
         TbUserEntity tbUserEntity = tbUserEntityService.getById(userId);
-        if (tbUserEntity.getStatus() == UserStatusEnum._禁用.getIndex()) {
+        if (tbUserEntity.getStatus() == SimpleStatusEnum._Disabled.getIndex()) {
             log.warn("Update user failed，Failed Reason: this user has been disabled, userId={}", userId);
             throw new BusinessException(ErrorMessageEnum.USER_DISABLED.getMessage(), ErrorMessageEnum.USER_DISABLED.getIndex());
         }

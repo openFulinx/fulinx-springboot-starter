@@ -19,7 +19,7 @@ import com.fulinx.spring.data.mysql.dao.mapper.ISystemUserDao;
 import com.fulinx.spring.data.mysql.dao.podo.systemUser.SystemUserListConditionPo;
 import com.fulinx.spring.data.mysql.dao.podo.systemUser.SystemUserListResultDo;
 import com.fulinx.spring.data.mysql.entity.*;
-import com.fulinx.spring.data.mysql.enums.AuthenticationStatusEnum;
+import com.fulinx.spring.data.mysql.enums.SimpleStatusEnum;
 import com.fulinx.spring.data.mysql.service.*;
 import com.fulinx.spring.service.captcha.ICaptchaService;
 import com.fulinx.spring.service.common.constant.DistributionLockNameConstant;
@@ -372,12 +372,12 @@ public class ISystemUserServiceImpl implements ISystemUserService {
             throw new BusinessException(ErrorMessageEnum.USERNAME_PASSWORD_INCORRECT.getMessage(), ErrorMessageEnum.USERNAME_PASSWORD_INCORRECT.getIndex());
         }
         // 查看用户状态是否在枚举中
-        AuthenticationStatusEnum authenticationStatusEnum = AuthenticationStatusEnum.of(tbSystemUserEntity.getStatus()).orElseThrow(() -> {
+        SimpleStatusEnum simpleStatusEnum = SimpleStatusEnum.of(tbSystemUserEntity.getStatus()).orElseThrow(() -> {
             log.error("Login Failed, Failed Reason: {}, status is not a valid value, username = {}, password = {} , status = {}", ErrorMessageEnum.SYSTEM_ERROR.getMessage(), tbSystemUserEntity.getUsername(), tbSystemUserEntity.getPassword(), tbSystemUserEntity.getStatus());
             return new BusinessException(ErrorMessageEnum.SYSTEM_ERROR.getMessage(), ErrorMessageEnum.SYSTEM_ERROR.getIndex());
         });
         // 状态状态是否为禁用
-        if (AuthenticationStatusEnum._已禁用 == authenticationStatusEnum) {
+        if (SimpleStatusEnum._Disabled == simpleStatusEnum) {
             log.warn("Login Failed，Failed Reason：{}, username = {}, password = {}", ErrorMessageEnum.USER_DISABLED.getMessage(), username, password);
             throw new BusinessException(ErrorMessageEnum.USER_DISABLED.getMessage(), ErrorMessageEnum.USER_DISABLED.getIndex());
         }

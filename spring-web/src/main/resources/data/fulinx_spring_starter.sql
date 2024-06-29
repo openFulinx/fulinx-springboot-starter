@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 28/06/2024 15:56:36
+ Date: 29/06/2024 09:53:19
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_file`;
 CREATE TABLE `tb_file`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'File Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'File ID',
   `original_file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Original File Name',
   `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'File Name',
   `file_content_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'File Content Type',
@@ -49,9 +49,9 @@ CREATE TABLE `tb_file`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_permission`;
 CREATE TABLE `tb_permission`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Permission Id',
-  `permission_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Permission Unique Identifier',
-  `permission_parent_id` int NOT NULL DEFAULT 0 COMMENT 'Permission Parent Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Permission ID',
+  `permission_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Permission Unique IDentifier',
+  `permission_parent_id` int NOT NULL DEFAULT 0 COMMENT 'Permission Parent ID',
   `permission_type` int NOT NULL DEFAULT 1 COMMENT 'Permission Type: 1. Node 2. Branch',
   `is_delete` int NOT NULL DEFAULT 0 COMMENT 'Soft Delete Flag',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Remark',
@@ -62,7 +62,7 @@ CREATE TABLE `tb_permission`  (
   `record_update_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Update Time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_permission_code`(`permission_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Permission Table' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Permission Table' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_permission
@@ -89,7 +89,7 @@ INSERT INTO `tb_permission` VALUES (16, 'sys:user:resetPassword', 8, 2, 0, NULL,
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_role`;
 CREATE TABLE `tb_role`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Role Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Role ID',
   `role_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Role Name',
   `is_delete` int NOT NULL DEFAULT 0 COMMENT 'Soft Delete Flag',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Remark',
@@ -99,7 +99,7 @@ CREATE TABLE `tb_role`  (
   `record_create_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Create Time',
   `record_update_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Update Time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Role Table' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Role Table' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_role
@@ -111,9 +111,9 @@ INSERT INTO `tb_role` VALUES (1, 'Administrator', 0, NULL, 1, NULL, NULL, NULL, 
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_role_permission_relation`;
 CREATE TABLE `tb_role_permission_relation`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Role Permission Id',
-  `role_id` int NOT NULL COMMENT 'Role Id',
-  `permission_id` int NOT NULL COMMENT 'Permission Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Role Permission Relation ID',
+  `role_id` int NOT NULL COMMENT 'Role ID',
+  `permission_id` int NOT NULL COMMENT 'Permission ID',
   `is_delete` int NOT NULL DEFAULT 0 COMMENT 'Soft Delete Flag',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Remark',
   `record_version` int NOT NULL DEFAULT 1 COMMENT 'Record Version',
@@ -149,7 +149,7 @@ INSERT INTO `tb_role_permission_relation` VALUES (16, 1, 16, 0, NULL, 1, NULL, N
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_system_user`;
 CREATE TABLE `tb_system_user`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'System User Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'System User ID',
   `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Username',
   `email` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Email',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Password',
@@ -164,7 +164,7 @@ CREATE TABLE `tb_system_user`  (
   `record_create_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Create Time',
   `record_update_time` datetime(6) NULL DEFAULT NULL COMMENT 'Record Update Time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'System User Table' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'System User Table' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_system_user
@@ -176,8 +176,8 @@ INSERT INTO `tb_system_user` VALUES (1, 'admin', 'admin@example.com', '$2a$10$G5
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_system_user_profile`;
 CREATE TABLE `tb_system_user_profile`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'System User Profile Id',
-  `system_user_id` int NOT NULL COMMENT 'User Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'System User Profile ID',
+  `system_user_id` int NOT NULL COMMENT 'User ID',
   `first_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'First Name',
   `last_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Last Name',
   `gender` int NULL DEFAULT NULL COMMENT 'Gender, 1 - Male, 2 - Female',
@@ -203,8 +203,8 @@ INSERT INTO `tb_system_user_profile` VALUES (1, 1, 'admin', 'admin', NULL, NULL,
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_system_user_role_relation`;
 CREATE TABLE `tb_system_user_role_relation`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'System User Role Id',
-  `system_user_id` int NOT NULL COMMENT 'System User Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'System User Role Relation ID',
+  `system_user_id` int NOT NULL COMMENT 'System User ID',
   `role_id` int NOT NULL COMMENT '角色ID',
   `is_delete` int NOT NULL DEFAULT 0 COMMENT 'SOft Delete Flag',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Remark',
@@ -227,7 +227,7 @@ INSERT INTO `tb_system_user_role_relation` VALUES (1, 1, 1, 0, NULL, 1, NULL, NU
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'User Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'User ID',
   `email` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Email',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Password',
   `salt` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Salt',
@@ -253,8 +253,8 @@ CREATE TABLE `tb_user`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_user_profile`;
 CREATE TABLE `tb_user_profile`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'User Profile Id',
-  `user_id` int NOT NULL COMMENT 'User Id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'User Profile ID',
+  `user_id` int NOT NULL COMMENT 'User ID',
   `first_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'First Name',
   `last_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Last Name',
   `gender` int NULL DEFAULT NULL COMMENT 'Gender, 1 - Male, 2 - Female',

@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public enum UserTypeEnum {
 
-    _普通用户(1, "普通用户"),
-    _超级管理员(9999, "超级管理员");
+    _Normal(1, "Normal"),
+    _Administrator(9999, "Administrator");
 
     @Getter
     private final String name;

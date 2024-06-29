@@ -9,29 +9,29 @@ import lombok.Getter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public enum ProductStatusEnum {
-    _disabled(0, "Disabled"),
-    _enabled(1, "Enabled");
+public enum SimpleStatusEnum {
+    _Disabled(0, "Disabled"),
+    _Enabled(1, "Enabled");
 
     @Getter
     private final String name;
     @Getter
     private final Integer index;
     @Getter
-    private static final Map<Integer, ProductStatusEnum> map = new LinkedHashMap<>();
+    private static final Map<Integer, SimpleStatusEnum> map = new LinkedHashMap<>();
 
     static {
-        for (ProductStatusEnum item : ProductStatusEnum.values()) {
+        for (SimpleStatusEnum item : SimpleStatusEnum.values()) {
             map.put(item.getIndex(), item);
         }
     }
 
-    ProductStatusEnum(Integer index, String name) {
+    SimpleStatusEnum(Integer index, String name) {
         this.name = name;
         this.index = index;
     }
 
-    public static Optional<ProductStatusEnum> of(Integer index) {
+    public static Optional<SimpleStatusEnum> of(Integer index) {
         return Optional.ofNullable(map.get(index));
     }
 
@@ -40,20 +40,20 @@ public enum ProductStatusEnum {
     }
 
     public static Optional<String> getName(Integer index) {
-        ProductStatusEnum e = map.get(index);
+        SimpleStatusEnum e = map.get(index);
         return e == null ? Optional.empty() : Optional.of(e.name);
     }
 
-    public static List<ProductStatusEnum> getElementList() {
+    public static List<SimpleStatusEnum> getElementList() {
         return new ArrayList<>(map.values());
     }
 
     public static List<Integer> getIndexList() {
-        return map.values().stream().map(ProductStatusEnum::getIndex).collect(Collectors.toList());
+        return map.values().stream().map(SimpleStatusEnum::getIndex).collect(Collectors.toList());
     }
 
     public static List<String> getNameList() {
-        return map.values().stream().map(ProductStatusEnum::getName).collect(Collectors.toList());
+        return map.values().stream().map(SimpleStatusEnum::getName).collect(Collectors.toList());
     }
 
     @Override
