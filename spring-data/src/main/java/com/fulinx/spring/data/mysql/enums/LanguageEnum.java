@@ -46,6 +46,19 @@ public enum LanguageEnum {
         return e == null ? Optional.empty() : Optional.of(e.getMessage());
     }
 
+    public static List<Map<String, Object>> getLanguageInfoList(String code) {
+        return map.values().stream()
+                .filter(languageEnum -> code == null || languageEnum.name().equalsIgnoreCase(code))
+                .map(languageEnum -> {
+                    Map<String, Object> info = new HashMap<>();
+                    info.put("id", languageEnum.getIndex());
+                    info.put("code", languageEnum.name());
+                    info.put("languageName", languageEnum.getMessage());
+                    return info;
+                })
+                .collect(Collectors.toList());
+    }
+
     public static List<LanguageEnum> getElementList() {
         return new ArrayList<>(map.values());
     }
