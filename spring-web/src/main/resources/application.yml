@@ -69,8 +69,8 @@ spring: # Spring Configuration
 
 mybatis-plus: # MyBatis Plus Configuration
   mapper-locations: # MyBatis Mapper Locations
-    - classpath*:/com/fulinx/spring-data/mysql/entity/sql/*.xml
-    - classpath*:/com/fulinx/spring-data/mysql/dao/sql/*.xml
+    - classpath*:/com/fulinx/spring/data/mysql/entity/sql/*.xml
+    - classpath*:/com/fulinx/spring/data/mysql/dao/sql/*.xml
   type-aliases-package: com.fulinx.spring-data # Package for MyBatis type aliases
   check-config-location: true
   configuration: # MyBatis Configuration
