@@ -44,7 +44,7 @@
         <com.github.slugify.version>3.0.6</com.github.slugify.version>
         <com.github.whvcse.easy-captcha.version>1.6.2</com.github.whvcse.easy-captcha.version>
         <com.alibaba.easyexcel.version>3.3.4</com.alibaba.easyexcel.version>
-        <com.github.pagehelper.pagehelper-spring-boot-starter.version>2.1.0
+        <com.github.pagehelper.pagehelper-spring-boot-starter.version>2.0.0
         </com.github.pagehelper.pagehelper-spring-boot-starter.version>
         <cn.hutool.hutool-all.version>5.8.28</cn.hutool.hutool-all.version>
         <druid.version>1.2.14</druid.version>
