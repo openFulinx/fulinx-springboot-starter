@@ -45,15 +45,6 @@ public class WebSecurityConfig {
                                                 "/v2/**",
                                                 "/swagger-resources/**",
                                                 "/doc.html").permitAll()
-                                        .requestMatchers(
-                                                HttpMethod.GET,
-                                                "/",
-                                                "/*.html",
-                                                "/favicon.ico",
-                                                "/**/*.html",
-                                                "/**/*.css",
-                                                "/**/*.js"
-                                        ).permitAll()
                                         .requestMatchers("/share/**").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/server-side/system-user/authentication/login").permitAll()
                                         .anyRequest().authenticated();
