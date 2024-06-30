@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public enum LanguageEnum {
 
     EN(1, "enum.language.en"),
-    ZH(1, "enum.language.zh");
+    ZH(2, "enum.language.zh");
 
     @Getter
     private final String messageKey;
