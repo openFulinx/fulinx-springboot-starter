@@ -14,7 +14,7 @@
 server:
   port: 17010
 
-version: v1.2.0.5
+version: v1.0.1
 # Default language for the application
 app:
   default:

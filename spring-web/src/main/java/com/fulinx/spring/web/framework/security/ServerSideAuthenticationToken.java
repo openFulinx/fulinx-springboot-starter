@@ -20,14 +20,14 @@ public class ServerSideAuthenticationToken extends AbstractJwtAuthenticationToke
     @Getter
     private ServerSideUserModel serverSideUserModel;
 
-    public ServerSideAuthenticationToken(String accessToken, Collection<? extends GrantedAuthority> authorities, String userModel) {
+    public ServerSideAuthenticationToken(String accessToken, Collection<? extends GrantedAuthority> authorities, ServerSideUserModel serverSideUserModel) {
         super(accessToken, authorities);
         this.setAuthenticated(true);
-        this.setDetails(userModel);
+        this.setDetails(serverSideUserModel);
     }
 
     public ServerSideAuthenticationToken(String accessToken, ServerSideUserModel serverSideUserModel) {
-        this(accessToken, serverSideUserModel.getAuthorities(), serverSideUserModel.getUserType() == 1 ? "server" : "client");
+        this(accessToken, serverSideUserModel.getAuthorities(), serverSideUserModel);
         this.serverSideUserModel = serverSideUserModel;
     }
 }
